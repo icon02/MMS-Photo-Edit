@@ -1,0 +1,29 @@
+<div class="p-1 m-0">
+  <button
+    class="btn m-0 p-1 pt-2 pb-2 w-100"
+    [ngClass]="{
+      'border-bottom': !expanded,
+      'bg-primary text-white': expanded
+    }"
+    [id]="id"
+    [attr.aria-expanded]="expanded"
+    [attr.aria-controls]="id + 'content'"
+    (click)="toggle()"
+  >
+    <div>{{ title }}</div>
+    <span
+      class="icon"
+      [ngStyle]="{ transform: expanded ? 'rotateZ(180deg)' : 'rotateZ(0deg)' }"
+      >↓</span
+    >
+  </button>
+  <div
+    class="expand-content"
+    [id]="id + 'content'"
+    [ngStyle]="{ display: expanded ? 'initial' : 'none' }"
+  >
+    <ng-content></ng-content>
+
+    <hr style="margin: 0; margin-top: -1px; opacity: 15%" />
+  </div>
+</div>

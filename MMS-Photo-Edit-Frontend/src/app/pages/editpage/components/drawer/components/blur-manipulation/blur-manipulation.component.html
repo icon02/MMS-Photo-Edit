@@ -1,0 +1,12 @@
+<form id="blur-form">
+  <label class="visually-hidden" for="blur-form">Blur</label>
+
+  <app-range-group
+    label="Variance:"
+    name="variance"
+    [defaultValue]="1"
+    [minValue]="1"
+    [maxValue]="8"
+  ></app-range-group>
+  <app-preview-apply-group></app-preview-apply-group>
+</form>

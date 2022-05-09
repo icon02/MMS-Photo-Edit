@@ -1,0 +1,32 @@
+@import "/src/styles.scss";
+
+.mcontainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dragNdrop {
+  flex-grow: 1;
+  width: 100%;
+  border: 2px dashed;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: transparent;
+
+  cursor: pointer;
+}
+
+.dragOver {
+  @extend .bg-light;
+  border: 4px double;
+}
+
+.no-event {
+  pointer-events: none;
+}

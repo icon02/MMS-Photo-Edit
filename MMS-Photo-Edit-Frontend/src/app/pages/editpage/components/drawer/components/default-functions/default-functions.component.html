@@ -1,0 +1,97 @@
+<div
+  class="btn-group w-100 rounded-0"
+  role="group"
+  aria-label="Default functions"
+>
+  <!-- UNDO -->
+  <button
+    class="btn btn-light rounded-0 border-bottom"
+    title="Undo"
+    [disabled]="!allowUndo"
+    [attr.aria-disabled]="!allowUndo"
+    (click)="onUndoClicked()"
+  >
+    <span
+      class="bi bi-arrow-counterclockwise"
+      aria-hidden="true"
+      [ngClass]="{ 'text-primary': allowUndo }"
+    ></span>
+    <span class="visually-hidden">Undo</span>
+  </button>
+
+  <!-- REDO -->
+  <button
+    class="btn btn-light rounded-0 border-bottom"
+    title="Redo"
+    [disabled]="!allowRedo"
+    [attr.aria-disabled]="!allowRedo"
+    (click)="onRedoClicked()"
+  >
+    <span
+      class="bi bi-arrow-clockwise"
+      aria-hidden="true"
+      [ngClass]="{ 'text-primary': allowRedo }"
+    ></span>
+    <span class="visually-hidden">Redo</span>
+  </button>
+
+  <!--  DOWNLOAD -->
+  <button
+    class="btn btn-primary rounded-0 border-bottom border-primary"
+    title="Download"
+    (click)="onDownloadClicked()"
+  >
+    <span class="bi bi-download" aria-hidden="true"></span>
+    <span class="visually-hidden">Download</span>
+  </button>
+
+  <!-- RESET -->
+  <button
+    class="btn btn-danger rounded-0 border-bottom border-danger"
+    aria-label="reset"
+    (click)="onResetClicked()"
+  >
+    RESET
+  </button>
+
+  <!-- DOWNLOAD PROGRESS -->
+  <app-dialog [show]="isDownloading">
+    <div class="bg-white p-3" style="min-width: 320px; width: 500px">
+      <p class="text-center" id="progress-desc">
+        Your download is being prepared. This might take some time depending on
+        the size of your image.
+      </p>
+      <hr />
+      <label class="visually-hidden" for="progress-bar">
+        Download progress
+      </label>
+      <div class="progress" style="height: 30px">
+        <div
+          class="progress-bar p-2"
+          [style]="'width: ' + downloadProgress + '%'"
+          role="progressbar"
+          id="progress-bar"
+          aria-describedby="progress-desc"
+          [attr.aria-valuenow]="downloadProgress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <span aria-hidden="true">
+            {{
+              downloadProgress < 99
+                ? downloadProgress + "%"
+                : "You file will be ready in a moment."
+            }}
+          </span>
+          <!-- 
+            SR status text, so that not every change in progress
+            results in a status message for screenreader
+          -->
+          <div class="visually-hidden" aria-live="polite">
+            {{ srDownloadStatus }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-dialog>
+</div>

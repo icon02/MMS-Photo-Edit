@@ -1,0 +1,86 @@
+<h1 class="visually-hidden">Edit</h1>
+<div class="mcontainer">
+  <div class="left-container">
+    <app-image-editor [src]="imageSrc"></app-image-editor>
+  </div>
+
+  <app-drawer class="border-start">
+    <app-default-functions></app-default-functions>
+
+    <!-- ========== MIRROR ========== -->
+    <app-collapsible label="Mirror">
+      <div class="p-3">
+        <app-mirror-manipulation></app-mirror-manipulation>
+      </div>
+    </app-collapsible>
+
+    <!-- ========== ROTATE ========== -->
+    <app-collapsible label="Rotate">
+      <div class="p-3">
+        <app-rotate-manipulation></app-rotate-manipulation>
+      </div>
+    </app-collapsible>
+
+    <!-- ========== RGB ========== -->
+    <app-collapsible label="RGB">
+      <div class="p-3 pb-2">
+        <app-rgb-manipulation></app-rgb-manipulation>
+      </div>
+    </app-collapsible>
+
+    <!-- ========== GREYSCALE ========== -->
+    <app-collapsible label="Greyscale">
+      <div class="p-3 pb-2">
+        <app-greyscale-manipulation></app-greyscale-manipulation>
+      </div>
+    </app-collapsible>
+
+    <!-- ========== BRIGHTNESS ========== -->
+    <app-collapsible label="Brightness">
+      <div class="p-3 pb-2">
+        <app-brightness-manipulation></app-brightness-manipulation>
+      </div>
+    </app-collapsible>
+
+    <!-- ========== BLUR ========== -->
+    <app-collapsible label="Blur">
+      <div class="p-3 pb-2">
+        <app-blur-manipulation></app-blur-manipulation>
+      </div>
+    </app-collapsible>
+
+    <!-- ========== COLOR INVERTER ========== -->
+    <app-collapsible label="Color Inverter">
+      <div class="p-3 pb-2">
+        <app-color-inverter-manipulation></app-color-inverter-manipulation>
+      </div>
+    </app-collapsible>
+
+    <!-- ========== EDGE COLORIZATION ========== -->
+    <app-collapsible label="Edge Colorization">
+      <div class="p-3 pb-2">
+        <app-edge-colorization-manipulation></app-edge-colorization-manipulation>
+      </div>
+    </app-collapsible>
+
+    <!-- ========== SMOOTHING ========== -->
+    <app-collapsible label="Smoothing">
+      <div class="p-3 pb-2">
+        <!-- TODO -->
+      </div>
+    </app-collapsible>
+  </app-drawer>
+
+  <!-- IMAGE MANIPULATION WAITING FOR SERVER -->
+  <!--
+  <app-dialog>
+    <div class="p-3 m-0 rounded bg-white" aria-live="polite">
+      <div
+        class="spinner-border text-primary p-0 m-0"
+        style="width: 5rem; height: 5rem; border-width: 0.6rem"
+      >
+        <span class="visually-hidden">Loading, please wait</span>
+      </div>
+    </div>
+  </app-dialog>
+--></div>

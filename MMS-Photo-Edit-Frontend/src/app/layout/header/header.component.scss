@@ -1,0 +1,15 @@
+@import "/src/styles";
+
+header {
+  @extend .navbar;
+  @extend .bg-primary;
+  @extend .navbar-dark;
+  @extend .ps-2;
+  @extend .pe-2;
+  @extend .pt-1;
+  @extend .pb-1;
+}
+
+.brand {
+  @extend .navbar-brand;
+}

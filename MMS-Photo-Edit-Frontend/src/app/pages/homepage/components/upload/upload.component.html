@@ -1,0 +1,43 @@
+<div class="mcontainer" (ondrop)="onDrop($event)">
+  <label class="visually-hidden" for="image-input"> Upload your image </label>
+
+  <div
+    class="btn border-primary rounded dragNdrop"
+    role="input"
+    tabindex="0"
+    type="file"
+    accept="image/*"
+    aria-label="Upload file"
+    aria-describedby=""
+    [ngClass]="{ dragOver: componentState === 'dragOver' }"
+    (click)="onCustomInputClick()"
+  >
+    <span
+      class="h1 text-primary no-events"
+      aria-hidden="true"
+      style="transform: scale(150%)"
+      >+</span
+    >
+    <small
+      class="no-events"
+      style="text-align: center"
+      *ngIf="componentState === 'initial'"
+    >
+      Drag and drop your image
+      <hr class="m-1" />
+      or click to open the file drawer
+    </small>
+    <small class="no-events" *ngIf="componentState === 'dragOver'">
+      Drop image
+    </small>
+  </div>
+
+  <input
+    class="visually-hidden"
+    aria-hidden="true"
+    type="file"
+    accept="image/*"
+    (change)="onInputChange($event)"
+    #imginput
+  />
+</div>

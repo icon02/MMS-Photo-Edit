@@ -1,0 +1,14 @@
+<app-header class="header"></app-header>
+
+<main>
+  <!-- hide header and only use as a spacer -->
+  <app-header
+    style="visibility: hidden"
+    aria-hidden="true"
+    tabindex="-1"
+  ></app-header>
+
+  <ng-content class="container-xxl mcontent"></ng-content>
+</main>
+
+<app-footer></app-footer>

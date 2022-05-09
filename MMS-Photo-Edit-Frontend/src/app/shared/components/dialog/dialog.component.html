@@ -1,0 +1,13 @@
+<div
+  *ngIf="show"
+  class="dialog fade show"
+  aria-modal="true"
+  role="dialog"
+  aria-hidden="true"
+  (click)="onClose($event)"
+  #root
+>
+  <div class="dialog-content" aira-hidden="false">
+    <ng-content></ng-content>
+  </div>
+</div>

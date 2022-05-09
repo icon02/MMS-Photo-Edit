@@ -1,0 +1,19 @@
+$animation-dur: 0.2s;
+
+button {
+  display: flex;
+  flex-direction: row;
+}
+
+button > div:first-child {
+  text-align: left;
+  flex-grow: 1;
+}
+
+.icon {
+  transition: all $animation-dur ease-in-out;
+}
+
+.expand-content {
+  transition: all $animation-dur ease-in-out;
+}

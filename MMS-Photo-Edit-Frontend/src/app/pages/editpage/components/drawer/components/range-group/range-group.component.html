@@ -1,0 +1,36 @@
+<div class="seperate2">
+  <label
+    class="form-label m-0"
+    [for]="['range-group-input-' + name, 'range-group-range-' + name]"
+  >
+    {{ label }}
+  </label>
+  <input
+    class="form-control form-control-sm"
+    type="number"
+    [id]="'range-group-input-' + name"
+    [name]="name"
+    [min]="minValue"
+    [max]="maxValue"
+    [defaultValue]="defaultValue"
+    [attr.valuemin]="minValue"
+    [attr.valuemax]="maxValue"
+    [attr.min]="-100"
+    [attr.max]="100"
+    (change)="onChange($event)"
+    [(ngModel)]="value"
+  />
+</div>
+<input
+  class="form-range w-100 color-danger"
+  type="range"
+  [id]="'range-group-range-' + name"
+  [name]="name"
+  [min]="minValue"
+  [max]="maxValue"
+  [defaultValue]="defaultValue"
+  [attr.valuemin]="minValue"
+  [attr.valuemax]="maxValue"
+  (change)="onChange($event)"
+  [(ngModel)]="value"
+/>

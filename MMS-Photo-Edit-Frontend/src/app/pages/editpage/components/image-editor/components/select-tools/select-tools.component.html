@@ -1,0 +1,54 @@
+<!-- hidden from screenreaders, therefore no valid roles, wai-aria etc. -->
+<div class="st-container bg-white rounded-end shadow">
+  <!---->
+  <!-- RECTANGLE -->
+  <button
+    class="btn btn-lg rounded-0"
+    style="--bs-bg-opacity: 0.6"
+    [ngClass]="{ 'bg-primary': selectedTool === 'rectangle' }"
+    title="select rectangle"
+    (click)="onRectClicked()"
+  >
+    <div class="bi bi-square select-icon" aria-hidden="true"></div>
+    <!--
+    <img src="/assets/image-editor/select-rect.png" alt="" />
+    -->
+  </button>
+
+  <!-- CIRCLE -->
+  <button
+    class="btn btn-lg rounded-0"
+    style="--bs-bg-opacity: 0.6"
+    [ngClass]="{ 'bg-primary': selectedTool === 'ellipse' }"
+    title="select circle"
+    (click)="onEllipseClicked()"
+  >
+    <div class="bi bi-circle select-icon" aria-hidden="true"></div>
+    <!--
+    <img src="/assets/image-editor/select-circle.png" alt="" />
+     -->
+  </button>
+
+  <!-- FREE HAND -->
+  <button
+    class="btn btn-lg rounded-0"
+    style="--bs-bg-opacity: 0.6"
+    [ngClass]="{ 'bg-primary': selectedTool === 'free-hand' }"
+    title="select freely"
+    (click)="onFreeHandClicked()"
+  >
+    <div class="bi bi-vector-pen select-icon" aria-hidden="true"></div>
+    <!-- 
+    <img src="/assets/image-editor/select-free.png" alt="" />
+    -->
+  </button>
+
+  <!-- CLEAR SELECTION -->
+  <button
+    class="btn btn-lg w-100 border-top rounded-0"
+    title="clear selection"
+    (click)="onClearClicked()"
+  >
+    <div class="bi bi-x-octagon select-icon" aria-hidden="true"></div>
+  </button>
+</div>

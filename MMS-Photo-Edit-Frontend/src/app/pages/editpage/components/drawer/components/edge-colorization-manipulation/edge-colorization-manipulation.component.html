@@ -1,0 +1,18 @@
+<form id="edge-colorization-form">
+  <label class="visually-hidden" for="edge-colorization"
+    >Edge Colorization</label
+  >
+
+  <app-range-group label="Threshold:" name="threshold"></app-range-group>
+
+  <label class="full-width space-between-row mt-2 mb-3">
+    Background Color:
+    <input type="color" />
+  </label>
+  <label class="full-width space-between-row mb-2">
+    Edge Color:
+    <input type="color" value="#057452" />
+  </label>
+
+  <app-preview-apply-group></app-preview-apply-group>
+</form>
