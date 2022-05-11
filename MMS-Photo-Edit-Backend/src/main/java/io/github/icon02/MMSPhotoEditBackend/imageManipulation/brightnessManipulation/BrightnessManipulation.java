@@ -1,4 +1,4 @@
-package io.github.icon02.MMSPhotoEditBackend.imageManipulation.blurFilter;
+package io.github.icon02.MMSPhotoEditBackend.imageManipulation.brightnessManipulation;
 
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.ImageFilter;
 import lombok.AllArgsConstructor;
@@ -12,19 +12,22 @@ import java.awt.image.BufferedImage;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BlurFilter implements ImageFilter {
+public class BrightnessManipulation implements ImageFilter {
 
-    private Integer variance;
+    private Areas area;
+
 
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
-        // TODO replace with custom implementation
-        BufferedImage output = new BufferedImage(image.getColorModel(), image.getRaster(), image.isAlphaPremultiplied(), null);
-        return output;
+        return null;
     }
 
     private void verifyState() {
-        if(variance == null) throw new IllegalStateException("'variance' must not be null");
+        if(area == null) throw new IllegalStateException("'area' must not be null");
+    }
+
+    public enum Areas {
+        ALL, BRIGHT, DARK
     }
 }
