@@ -2,19 +2,19 @@ package io.github.icon02.MMSPhotoEditBackend.controller;
 
 import io.github.icon02.MMSPhotoEditBackend.filter.SessionFilter;
 import io.github.icon02.MMSPhotoEditBackend.service.ImageService;
+import static io.github.icon02.MMSPhotoEditBackend.service.ImageService.ManipulationType.*;
 import io.github.icon02.MMSPhotoEditBackend.utils.MultipartImage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/image")
 public class ImageController {
 
     private final ImageService imageService;
@@ -29,16 +29,12 @@ public class ImageController {
     /* ==================== GET MAPPINGS ==================== */
 
     @GetMapping("/current")
-    public ResponseEntity<Resource> getCurrent(HttpServletRequest request) {
+    public ResponseEntity<?> getCurrent(HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
         MultipartImage image = imageService.getCurrent(sessionId);
-        if (image == null) return ResponseEntity.badRequest().build();
-        if (image.getOriginalFilename() == null) return ResponseEntity.internalServerError().build();
 
-        HttpHeaders headers = prepareMultipartImageHeaders(image);
-
-        return new ResponseEntity<>(image.getResource(), headers, HttpStatus.OK);
+        return buildImageResponse(image);
     }
 
     /* ==================== POST MAPPINGS ==================== */
@@ -57,23 +53,114 @@ public class ImageController {
     // == image manipulation methods
 
     @PatchMapping("/mirror")
-    public ResponseEntity<Resource> mirror(@RequestParam("dir") String direction, @RequestBody Object selection, HttpServletRequest request) {
+    public ResponseEntity<?> mirror(@RequestParam("dir") String direction, @RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
-        MultipartImage image = imageService.mirror(sessionId, direction, selection);
-        if(image == null) return ResponseEntity.badRequest().build();
-        if(image.getOriginalFilename() == null) return ResponseEntity.internalServerError().build();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(ImageService.PARAM_MIRROR_DIRECTION, direction);
 
-        HttpHeaders headers = prepareMultipartImageHeaders(image);
-        return new ResponseEntity<>(image.getResource(), headers, HttpStatus.OK);
+        MultipartImage image =  imageService.manipulate(sessionId, selection, MIRROR, params);
+
+        return buildImageResponse(image);
     }
 
-    public ResponseEntity<Resource> rotate(@RequestParam("rotation") int rotation, HttpServletRequest request) {
+    @PatchMapping("/rotate")
+    public ResponseEntity<?> rotate(@RequestParam("rotation") Integer rotation, @RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
-        // TODO
-        return null;
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(ImageService.PARAM_ROTATION, rotation);
+
+        MultipartImage image = imageService.manipulate(sessionId, selection, ROTATE, params);
+
+        return buildImageResponse(image);
     }
 
+    @PatchMapping("/rgb")
+    public ResponseEntity<?> rgb(
+            @RequestParam(defaultValue = "0") Integer r,
+            @RequestParam(defaultValue = "0") Integer g,
+            @RequestParam(defaultValue = "0") Integer b,
+            @RequestBody Object selection,
+            HttpServletRequest request) {
+        //
+        String sessionId = getSessionId(request);
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(ImageService.PARAM_RGB_R, r);
+        params.put(ImageService.PARAM_RGB_G, g);
+        params.put(ImageService.PARAM_RGB_B, b);
+
+        MultipartImage image = imageService.manipulate(sessionId, selection, RGB, params);
+
+        return buildImageResponse(image);
+    }
+
+    @PatchMapping("/greyscale")
+    public ResponseEntity<?> greyscale(@RequestBody Object selection, HttpServletRequest request) {
+        String sessionId = getSessionId(request);
+
+        MultipartImage image = imageService.manipulate(sessionId, selection, GREYSCALE, new HashMap<>());
+
+        return buildImageResponse(image);
+    }
+
+    @PatchMapping("/brightness")
+    public ResponseEntity<?> generalBrightness(@RequestParam("val") Integer value, @RequestBody Object selection, HttpServletRequest request) {
+        String sessionId = getSessionId(request);
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(ImageService.PARAM_BRIGHTNESS_VAL, value);
+
+        MultipartImage image = imageService.manipulate(sessionId, selection, BRIGHTNESS, params);
+
+        return buildImageResponse(image);
+    }
+
+    @PatchMapping("/brightness/dark")
+    public ResponseEntity<?> darkBrightness(@RequestParam("val") Integer value, @RequestBody Object selection, HttpServletRequest request) {
+        String sessionId = getSessionId(request);
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(ImageService.PARAM_BRIGHTNESS_VAL, value);
+
+        MultipartImage image = imageService.manipulate(sessionId, selection, DARK_BRIGHTNESS, params);
+
+        return buildImageResponse(image);
+    }
+
+    @PatchMapping("/brightness/bright")
+    public ResponseEntity<?> brightBrightness(@RequestParam("val") Integer value, @RequestBody Object selection, HttpServletRequest request) {
+        String sessionId = getSessionId(request);
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(ImageService.PARAM_BRIGHTNESS_VAL, value);
+
+        MultipartImage image = imageService.manipulate(sessionId, selection, BRIGHT_BRIGHTNESS, params);
+
+        return buildImageResponse(image);
+    }
+
+    @PatchMapping("/blur")
+    public ResponseEntity<?> blur(@RequestParam Integer variance, @RequestBody Object selection, HttpServletRequest request) {
+        String sessionId = getSessionId(request);
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(ImageService.PARAM_BLUR_VARIANCE, variance);
+
+        MultipartImage image = imageService.manipulate(sessionId, selection, BLUR, params);
+
+        return buildImageResponse(image);
+    }
+
+    @PatchMapping("/color-invert")
+    public ResponseEntity<?> colorInvert(@RequestBody Object selection, HttpServletRequest request) {
+        String sessionId = getSessionId(request);
+
+        MultipartImage image = imageService.manipulate(sessionId, selection, COLOR_INVERT, new HashMap<>());
+
+        return buildImageResponse(image);
+    }
 
 
     /* ==================== PRIVATE HELPER METHODS ==================== */
@@ -104,6 +191,14 @@ public class ImageController {
 
     private String getSessionId(HttpServletRequest request) {
         return (String) request.getAttribute(SessionFilter.ATTR_SESSION_ID_KEY);
+    }
+
+    private ResponseEntity<?> buildImageResponse(MultipartImage image) {
+        if(image == null) return ResponseEntity.badRequest().build();
+        if(image.getOriginalFilename() == null) return ResponseEntity.internalServerError().build();
+
+        HttpHeaders headers = prepareMultipartImageHeaders(image);
+        return new ResponseEntity<>(image.getResource(), headers, HttpStatus.OK);
     }
 
 }

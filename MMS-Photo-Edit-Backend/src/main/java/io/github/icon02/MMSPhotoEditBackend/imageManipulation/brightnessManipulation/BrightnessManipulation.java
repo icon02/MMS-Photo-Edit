@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 public class BrightnessManipulation implements ImageFilter {
 
     private Areas area;
+    private Integer value;
 
 
     @Override
