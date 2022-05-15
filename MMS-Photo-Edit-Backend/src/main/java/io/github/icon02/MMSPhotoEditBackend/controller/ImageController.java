@@ -49,10 +49,9 @@ public class ImageController {
             return ResponseEntity.internalServerError().build();
     }
 
-    /* ==================== PATCH MAPPINGS ==================== */
-    // == image manipulation methods
+    /* ===== IMAGE MANIPULATION ===== */
 
-    @PatchMapping("/mirror")
+    @PostMapping("/mirror")
     public ResponseEntity<?> mirror(@RequestParam("dir") String direction, @RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
@@ -64,7 +63,7 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
-    @PatchMapping("/rotate")
+    @PostMapping("/rotate")
     public ResponseEntity<?> rotate(@RequestParam("rotation") Integer rotation, @RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
@@ -76,7 +75,7 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
-    @PatchMapping("/rgb")
+    @PostMapping("/rgb")
     public ResponseEntity<?> rgb(
             @RequestParam(defaultValue = "0") Integer r,
             @RequestParam(defaultValue = "0") Integer g,
@@ -96,7 +95,7 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
-    @PatchMapping("/greyscale")
+    @PostMapping("/greyscale")
     public ResponseEntity<?> greyscale(@RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
@@ -105,7 +104,7 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
-    @PatchMapping("/brightness")
+    @PostMapping("/brightness")
     public ResponseEntity<?> generalBrightness(@RequestParam("val") Integer value, @RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
@@ -117,7 +116,7 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
-    @PatchMapping("/brightness/dark")
+    @PostMapping("/brightness/dark")
     public ResponseEntity<?> darkBrightness(@RequestParam("val") Integer value, @RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
@@ -129,7 +128,7 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
-    @PatchMapping("/brightness/bright")
+    @PostMapping("/brightness/bright")
     public ResponseEntity<?> brightBrightness(@RequestParam("val") Integer value, @RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
@@ -141,7 +140,7 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
-    @PatchMapping("/blur")
+    @PostMapping("/blur")
     public ResponseEntity<?> blur(@RequestParam Integer variance, @RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
@@ -153,7 +152,7 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
-    @PatchMapping("/color-invert")
+    @PostMapping("/color-invert")
     public ResponseEntity<?> colorInvert(@RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
@@ -165,15 +164,18 @@ public class ImageController {
 
     /* ==================== PRIVATE HELPER METHODS ==================== */
     private HttpHeaders prepareMultipartImageHeaders(MultipartImage image) {
-        MediaType mediaType = MediaTypeFactory
-                .getMediaType(image.getResource())
-                .orElse(MediaType.APPLICATION_OCTET_STREAM);
+        MediaType mediaType = MediaType.APPLICATION_OCTET_STREAM;
+                // MediaTypeFactory
+                // .getMediaType(image.getResource())
+                // .orElse(MediaType.APPLICATION_OCTET_STREAM);
 
+        String fileName = image.getOriginalFilename();
+        if(fileName == null) fileName = "mms_edit";
         ContentDisposition disposition = ContentDisposition
                 .attachment()
-                .filename(image.getOriginalFilename())
+                .filename(fileName)
                 .build();
-
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(mediaType);
         headers.setContentDisposition(disposition);

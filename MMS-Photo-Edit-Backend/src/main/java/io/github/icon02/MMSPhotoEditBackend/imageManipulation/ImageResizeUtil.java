@@ -31,13 +31,14 @@ public class ImageResizeUtil {
     }
 
     public BufferedImage resize(BufferedImage original, int pixels, String dim) {
-
+        if(original == null) return null;
         // TODO custom implementation
 
         return null;
     }
 
     public BufferedImage createThumbnail(BufferedImage image) {
+        if(image == null) return null;
         /*
         TODO
         resize the image, so that the area of the new image
