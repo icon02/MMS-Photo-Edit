@@ -12,24 +12,26 @@
     [ngClass]="{ dragOver: componentState === 'dragOver' }"
     (click)="onCustomInputClick()"
   >
+    <!-- prettier-ignore -->
     <span
       class="h1 text-primary no-events"
       aria-hidden="true"
       style="transform: scale(150%)"
-      >+</span
-    >
-    <small
-      class="no-events"
+      >
+      +
+    </span>
+    <div
+      class="no-events small"
       style="text-align: center"
       *ngIf="componentState === 'initial'"
     >
       Drag and drop your image
       <hr class="m-1" />
       or click to open the file drawer
-    </small>
-    <small class="no-events" *ngIf="componentState === 'dragOver'">
+    </div>
+    <div class="no-events" *ngIf="componentState === 'dragOver'">
       Drop image
-    </small>
+    </div>
   </div>
 
   <input

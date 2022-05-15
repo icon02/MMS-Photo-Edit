@@ -8,67 +8,70 @@
     <app-default-functions></app-default-functions>
 
     <!-- ========== MIRROR ========== -->
-    <app-collapsible label="Mirror">
+    <app-collapsible label="Mirror" [disabled]="disabled">
       <div class="p-3">
         <app-mirror-manipulation></app-mirror-manipulation>
       </div>
     </app-collapsible>
 
     <!-- ========== ROTATE ========== -->
-    <app-collapsible label="Rotate">
+    <app-collapsible label="Rotate" [disabled]="disabled">
       <div class="p-3">
         <app-rotate-manipulation></app-rotate-manipulation>
       </div>
     </app-collapsible>
 
     <!-- ========== RGB ========== -->
-    <app-collapsible label="RGB">
+    <app-collapsible label="RGB" [disabled]="disabled">
       <div class="p-3 pb-2">
         <app-rgb-manipulation></app-rgb-manipulation>
       </div>
     </app-collapsible>
 
     <!-- ========== GREYSCALE ========== -->
-    <app-collapsible label="Greyscale">
+    <app-collapsible label="Greyscale" [disabled]="disabled">
       <div class="p-3 pb-2">
         <app-greyscale-manipulation></app-greyscale-manipulation>
       </div>
     </app-collapsible>
 
     <!-- ========== BRIGHTNESS ========== -->
-    <app-collapsible label="Brightness">
+    <app-collapsible label="Brightness" [disabled]="disabled">
       <div class="p-3 pb-2">
         <app-brightness-manipulation></app-brightness-manipulation>
       </div>
     </app-collapsible>
 
     <!-- ========== BLUR ========== -->
-    <app-collapsible label="Blur">
+    <app-collapsible label="Blur" [disabled]="disabled">
       <div class="p-3 pb-2">
         <app-blur-manipulation></app-blur-manipulation>
       </div>
     </app-collapsible>
 
     <!-- ========== COLOR INVERTER ========== -->
-    <app-collapsible label="Color Inverter">
+    <app-collapsible label="Color Inverter" [disabled]="disabled">
       <div class="p-3 pb-2">
         <app-color-inverter-manipulation></app-color-inverter-manipulation>
       </div>
     </app-collapsible>
 
     <!-- ========== EDGE COLORIZATION ========== -->
-    <app-collapsible label="Edge Colorization">
+    <app-collapsible label="Edge Colorization" [disabled]="disabled">
       <div class="p-3 pb-2">
         <app-edge-colorization-manipulation></app-edge-colorization-manipulation>
       </div>
     </app-collapsible>
 
     <!-- ========== SMOOTHING ========== -->
-    <app-collapsible label="Smoothing">
+    <!-- already covered with blur-function -->
+    <!--
+    <app-collapsible label="Smoothing" [disabled]="disabled">
       <div class="p-3 pb-2">
-        <!-- TODO -->
+       TODO
       </div>
     </app-collapsible>
+    -->
   </app-drawer>
 
   <!-- IMAGE MANIPULATION WAITING FOR SERVER -->

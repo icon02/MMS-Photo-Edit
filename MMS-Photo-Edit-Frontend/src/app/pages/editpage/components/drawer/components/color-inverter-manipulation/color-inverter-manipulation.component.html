@@ -4,5 +4,8 @@
     class="visually-hidden" 
     for="color-inverter-from">Color Inverter</label>
 
-  <app-preview-apply-group></app-preview-apply-group>
+  <app-preview-apply-group
+    (onApplyClicked)="onApply()"
+    (onPreviewClicked)="onPreview()"
+  ></app-preview-apply-group>
 </form>

@@ -7,8 +7,8 @@
   <button
     class="btn btn-light rounded-0 border-bottom"
     title="Undo"
-    [disabled]="!allowUndo"
-    [attr.aria-disabled]="!allowUndo"
+    [disabled]="!allowUndo || disabled"
+    [attr.aria-disabled]="!allowUndo || disabled"
     (click)="onUndoClicked()"
   >
     <span
@@ -23,8 +23,8 @@
   <button
     class="btn btn-light rounded-0 border-bottom"
     title="Redo"
-    [disabled]="!allowRedo"
-    [attr.aria-disabled]="!allowRedo"
+    [disabled]="!allowRedo || disabled"
+    [attr.aria-disabled]="!allowRedo || disabled"
     (click)="onRedoClicked()"
   >
     <span
@@ -39,6 +39,8 @@
   <button
     class="btn btn-primary rounded-0 border-bottom border-primary"
     title="Download"
+    [disabled]="disabled"
+    [attr.aria-disabled]="disabled"
     (click)="onDownloadClicked()"
   >
     <span class="bi bi-download" aria-hidden="true"></span>
@@ -49,6 +51,8 @@
   <button
     class="btn btn-danger rounded-0 border-bottom border-danger"
     aria-label="reset"
+    [disabled]="disabled"
+    [attr.aria-disabled]="disabled"
     (click)="onResetClicked()"
   >
     RESET

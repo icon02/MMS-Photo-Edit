@@ -12,6 +12,8 @@ export class CollapsibleComponent implements OnInit {
   title: string = 'Test Title';
   @Input('initialExpanded')
   initialExpanded: boolean = false;
+  @Input('disabled')
+  disabled: boolean = false;
 
   expanded: boolean = this.initialExpanded;
 

@@ -8,6 +8,8 @@ import { ImageService } from 'src/app/image.service';
   styleUrls: ['./default-functions.component.scss'],
 })
 export class DefaultFunctionsComponent implements OnInit {
+  disabled!: boolean;
+
   allowUndo!: boolean;
   allowRedo!: boolean;
 
@@ -27,6 +29,10 @@ export class DefaultFunctionsComponent implements OnInit {
     this.allowRedo = this.imageService.allowsRedoSubject.value;
     this.imageService.allowsRedoSubject.subscribe(
       (val) => (this.allowRedo = val)
+    );
+
+    this.imageService.isLoadingSubject.subscribe(
+      (val) => (this.disabled = val)
     );
   }
 
@@ -64,7 +70,7 @@ export class DefaultFunctionsComponent implements OnInit {
           httpResponse.headers.keys(); // lazy load
           const cd = httpResponse.headers.get('content-disposition');
 
-          console.log('content disposition', cd);
+          // console.log('content disposition', cd);
           const filename = this.cdToFilename(cd as string);
           console.log('filename', filename);
           const blob = httpResponse.body as Blob;
@@ -75,7 +81,7 @@ export class DefaultFunctionsComponent implements OnInit {
           link.download = filename;
           link.click();
 
-          console.log('downloadLink', link);
+          // console.log('downloadLink', link);
 
           this.isDownloading = false;
           this.downloadProgress = 0;

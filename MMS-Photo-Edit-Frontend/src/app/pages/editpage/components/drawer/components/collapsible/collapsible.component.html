@@ -20,7 +20,10 @@
   <div
     class="expand-content"
     [id]="id + 'content'"
-    [ngStyle]="{ display: expanded ? 'initial' : 'none' }"
+    [ngStyle]="{
+      display: expanded ? 'initial' : 'none',
+      'pointer-events': disabled ? 'none' : 'initial'
+    }"
   >
     <ng-content></ng-content>
 

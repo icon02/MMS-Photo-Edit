@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { ImageService } from 'src/app/image.service';
 import { SelectToolService } from './components/select-tools/select-tool.service';
 import { SelectTool } from './components/select-tools/select-tool.type';
 import { Circle, FreeHandShape, Point, Rectangle } from './shapes.model';
@@ -68,13 +69,23 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
 
   private isPathClosed: boolean = false;
 
-  constructor(private selectToolService: SelectToolService) {}
+  /* ========== OTHER STATE VARS ========== */
+  isLoading: boolean = false;
+
+  constructor(
+    private selectToolService: SelectToolService,
+    private imageService: ImageService
+  ) {}
 
   ngOnInit(): void {
     this.selectToolService.selectedToolBSubject.subscribe((val) => {
       this.selectedTool = val;
       this.resetSelection();
     });
+
+    this.imageService.isLoadingSubject.subscribe(
+      (val) => (this.isLoading = val)
+    );
   }
 
   ngAfterViewInit(): void {

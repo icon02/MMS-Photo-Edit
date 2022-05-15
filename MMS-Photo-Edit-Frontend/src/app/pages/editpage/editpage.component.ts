@@ -10,6 +10,7 @@ import { ImageService } from 'src/app/image.service';
 })
 export class EditPageComponent implements OnInit {
   imageSrc!: SafeResourceUrl | undefined;
+  disabled!: boolean;
 
   constructor(private imageService: ImageService, private router: Router) {}
 
@@ -21,5 +22,9 @@ export class EditPageComponent implements OnInit {
       this.router.navigateByUrl('/');
     }
     this.imageService.curImageSubject.subscribe((img) => (this.imageSrc = img));
+
+    this.imageService.isLoadingSubject.subscribe(
+      (val) => (this.disabled = this.disabled)
+    );
   }
 }

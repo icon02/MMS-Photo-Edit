@@ -1,16 +1,17 @@
 import {
   HttpClient,
-  HttpEvent,
   HttpHeaders,
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { Session } from './session.model';
 import { SessionService } from './session.service';
 import { DistinctBehaviorSubject } from './utils/DistinctBehaviorSubject';
+
+const IMAGE_BASE_URL = 'http://localhost:8080/image';
 
 @Injectable({
   providedIn: 'root',
@@ -90,7 +91,7 @@ export class ImageService {
 
     const request = new HttpRequest(
       'POST',
-      'http://localhost:8080/images/use',
+      'http://localhost:8080/image/use',
       formData,
       options
     );
@@ -146,15 +147,32 @@ export class ImageService {
 
     const request = new HttpRequest(
       'GET',
-      'http://localhost:8080/images/current',
+      IMAGE_BASE_URL + '/current',
       options
     );
 
     return this.httpClient.request<any>(request);
   }
 
-  /* ==================== NETWORK METHODS ==================== */
-  // TODO add methods
+  colorInvert(): void {
+    this.isLoadingSubject.next(true);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/color-invert',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          responseType: 'blob',
+          withCredentials: true,
+        }
+      )
+      .subscribe((res) => {
+        this.setNextImage(res);
+        this.isLoadingSubject.next(false);
+      });
+  }
 
   /* ==================== PRIVATE METHODS ==================== */
 
@@ -175,5 +193,17 @@ export class ImageService {
     return fetch(url as string)
       .then((response) => response.blob())
       .then((blob) => new File([blob], this.baseImageName as string));
+  }
+
+  private setNextImage(response: HttpResponse<Blob>): void {
+    if (response.status === 200 && response.body) {
+      const unsafeUrl = window.URL.createObjectURL(response.body);
+      const safeImgUrl =
+        this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
+      this.images.push(safeImgUrl);
+      this.curImageSubject.next(safeImgUrl);
+
+      // TODO logic for allowUndoSubject
+    }
   }
 }

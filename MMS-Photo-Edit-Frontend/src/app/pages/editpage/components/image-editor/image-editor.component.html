@@ -1,7 +1,15 @@
-<div class="editor-container" tabindex="-1">
+<div class="editor-container">
   <app-select-tools></app-select-tools>
   <div class="center-container" *ngIf="src">
-    <img class="center-container-item" [src]="src" (load)="onImgLoad()" #img />
+    <!---->
+    <img
+      class="center-container-item"
+      [ngClass]="{ blurred: isLoading }"
+      [src]="src"
+      (load)="onImgLoad()"
+      #img
+    />
+
     <canvas
       class="center-container-item border shadow"
       [ngClass]="{ 'close-pointer': isClosePath }"
@@ -10,5 +18,6 @@
       (mouseup)="onCanvasMouseUp($event)"
       #canvas
     ></canvas>
+    <!---->
   </div>
 </div>
