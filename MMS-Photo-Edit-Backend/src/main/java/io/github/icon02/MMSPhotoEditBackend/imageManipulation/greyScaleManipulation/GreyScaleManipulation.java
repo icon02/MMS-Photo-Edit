@@ -8,7 +8,6 @@ public class GreyScaleManipulation implements ImageFilter {
 
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
-        // TODO
         return null;
     }
 }

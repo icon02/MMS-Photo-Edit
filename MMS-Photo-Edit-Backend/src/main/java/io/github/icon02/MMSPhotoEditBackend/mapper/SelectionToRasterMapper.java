@@ -25,17 +25,14 @@ public class SelectionToRasterMapper {
     }
 
     private Boolean[][] getRasterFromCircle(CircleSelection selection, int reqWidth, int reqHeight) {
-        // TODO
         return null;
     }
 
     private Boolean[][] getRasterFromRect(RectSelection selection, int reqWidth, int reqHeight) {
-        // TODO
         return null;
     }
 
     private Boolean[][] getRasterFromFreehand(FreehandSelection selection, int reqWidth, int reqHeight) {
-        // TODO
         return null;
     }
 }

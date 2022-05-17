@@ -9,20 +9,9 @@ public class ColorInversionManipulation implements ImageFilter {
 
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
-        // TODO remove, only for testing purpose
         BufferedImage output = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                Color testColor = new Color(
-                        (int) (Math.random() * 255),
-                        (int) (Math.random() * 255),
-                        (int) (Math.random() * 255)
-                );
-
-                output.setRGB(x, y, testColor.getRGB());
-            }
-        }
+       // TODO
 
         return output;
     }

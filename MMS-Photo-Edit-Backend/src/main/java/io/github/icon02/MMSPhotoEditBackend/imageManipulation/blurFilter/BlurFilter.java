@@ -19,7 +19,7 @@ public class BlurFilter implements ImageFilter {
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
-        // TODO replace with custom implementation
+        // TODO
         BufferedImage output = new BufferedImage(image.getColorModel(), image.getRaster(), image.isAlphaPremultiplied(), null);
         return output;
     }
