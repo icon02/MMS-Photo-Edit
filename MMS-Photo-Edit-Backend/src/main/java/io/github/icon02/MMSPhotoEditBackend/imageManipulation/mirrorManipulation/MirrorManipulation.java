@@ -21,14 +21,6 @@ public class MirrorManipulation implements ImageFilter {
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         BufferedImage output = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
-        // TODO only for testing purpose, replace with custom implementation
-        Color testColor = new Color(200, 50, 0);
-        for(int y = 0; y < output.getHeight(); y++) {
-            for(int x = 0; x < output.getWidth(); x++) {
-                output.setRGB(x, y, testColor.getRGB());
-            }
-        }
-
         return output;
     }
 

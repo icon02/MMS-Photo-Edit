@@ -9,7 +9,6 @@ public class ColorInversionManipulation implements ImageFilter {
 
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
-        // TODO remove, only for testing purpose
         BufferedImage output = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
         for (int y = 0; y < image.getHeight(); y++) {

@@ -21,6 +21,7 @@ public class BrightnessManipulation implements ImageFilter {
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
+        // TODO
         return null;
     }
 

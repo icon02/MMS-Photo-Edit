@@ -30,14 +30,12 @@ public class SessionController {
     @PatchMapping("/update")
     public ResponseEntity<Session> update(HttpServletRequest request) {
         Session session = null;
-        // TODO
 
         return ResponseEntity.ok(session);
     }
 
     @DeleteMapping("/close")
     public ResponseEntity<Void> close(HttpServletRequest request) {
-        // TODO
         return ResponseEntity.ok().build();
     }
 }
