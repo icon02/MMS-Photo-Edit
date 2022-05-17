@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 @AllArgsConstructor
@@ -19,9 +19,19 @@ public class MirrorManipulation implements ImageFilter {
 
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
-        BufferedImage output = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-        // TODO
-        return output;
+        BufferedImage newImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+        for (int i = 0; i < newImg.getHeight(); i++ ) {
+            for (int j = 0; j < newImg.getWidth(); j++) {
+                if (selectionRaster[i][j]) {
+                    Color c = new Color(image.getRGB(j, i));
+                    if (direction == Direction.VERTICAL)
+                         newImg.setRGB((newImg.getWidth() - 1) - j, i, c.getRGB());
+                    else newImg.setRGB(j,(newImg.getHeight() - 1) - i, c.getRGB());
+                }
+            }
+        }
+        return newImg;
     }
 
     public enum Direction {
