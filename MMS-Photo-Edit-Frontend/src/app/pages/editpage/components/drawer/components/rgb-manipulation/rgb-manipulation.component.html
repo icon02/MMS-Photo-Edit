@@ -1,11 +1,25 @@
-<form id="rgb-form" (ngSubmit)="onSubmit($event)">
+<form id="rgb-form">
   <label class="visually-hidden" for="rgb-from">Change RGB values</label>
 
-  <app-range-group label="Red:" name="red-value"></app-range-group>
-  <app-range-group label="Green:" name="green-value"></app-range-group>
-  <app-range-group label="Blue:" name="blue-value"></app-range-group>
+  <app-range-group
+    label="Red:"
+    name="red-value"
+    (onChange)="onRedChange($event)"
+  ></app-range-group>
+  <app-range-group
+    label="Green:"
+    name="green-value"
+    (onChange)="onGreenChange($event)"
+  ></app-range-group>
+  <app-range-group
+    label="Blue:"
+    name="blue-value"
+    (onChange)="onBlueChange($event)"
+  ></app-range-group>
 
-  <app-preview-apply-group></app-preview-apply-group>
+  <app-preview-apply-group
+    (onApplyClicked)="onApply()"
+  ></app-preview-apply-group>
 
   <app-dialog [show]="false">
     <!-- preview dialog for thumbnail -->

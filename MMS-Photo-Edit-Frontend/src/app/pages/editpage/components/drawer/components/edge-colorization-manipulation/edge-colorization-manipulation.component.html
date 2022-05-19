@@ -3,16 +3,22 @@
     >Edge Colorization</label
   >
 
-  <app-range-group label="Threshold:" name="threshold"></app-range-group>
+  <app-range-group
+    label="Threshold:"
+    name="threshold"
+    (onChange)="onThresholdChange($event)"
+  ></app-range-group>
 
   <label class="full-width space-between-row mt-2 mb-3">
     Background Color:
-    <input type="color" />
+    <input type="color" name="bgColor" [(ngModel)]="bgColor" />
   </label>
   <label class="full-width space-between-row mb-2">
     Edge Color:
-    <input type="color" value="#057452" />
+    <input type="color" name="edgeColor" [(ngModel)]="edgeColor" />
   </label>
 
-  <app-preview-apply-group></app-preview-apply-group>
+  <app-preview-apply-group
+    (onApplyClicked)="onApply()"
+  ></app-preview-apply-group>
 </form>

@@ -5,8 +5,11 @@
     label="Variance:"
     name="variance"
     [defaultValue]="1"
-    [minValue]="0"
+    [minValue]="1"
     [maxValue]="10"
+    (onChange)="onVarianceChange($event)"
   ></app-range-group>
-  <app-preview-apply-group></app-preview-apply-group>
+  <app-preview-apply-group
+    (onApplyClicked)="onApply()"
+  ></app-preview-apply-group>
 </form>

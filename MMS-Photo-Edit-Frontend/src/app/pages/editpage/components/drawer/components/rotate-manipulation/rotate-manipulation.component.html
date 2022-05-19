@@ -2,7 +2,11 @@
   <!-- rotate left -->
   <form id="mirror-form-left">
     <label class="visually-hidden" for="mirror-form-left">Rotate left</label>
-    <button class="btn btn-outline-primary w-100" type="submit">
+    <button
+      class="btn btn-outline-primary w-100"
+      type="submit"
+      (click)="rotate90Right()"
+    >
       <div
         class="d-flex flex-row justify-content-center gap-3"
         aria-hidden="true"
@@ -18,7 +22,11 @@
   <!-- rotate right -->
   <form id="mirror-form-left">
     <label class="visually-hidden" for="mirror-form-left">Rotate left</label>
-    <button class="btn btn-outline-primary w-100" type="submit">
+    <button
+      class="btn btn-outline-primary w-100"
+      type="submit"
+      (click)="rotate90Left()"
+    >
       <div
         class="d-flex flex-row justify-content-center gap-3"
         aria-hidden="true"
@@ -34,7 +42,11 @@
   <!-- rotate 180 -->
   <form id="mirror-form-left">
     <label class="visually-hidden" for="mirror-form-left">Rotate left</label>
-    <button class="btn btn-outline-primary w-100" type="submit">
+    <button
+      class="btn btn-outline-primary w-100"
+      type="submit"
+      (click)="rotate180()"
+    >
       <div
         class="d-flex flex-row justify-content-center gap-3"
         aria-hidden="true"
