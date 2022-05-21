@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @AllArgsConstructor
@@ -21,8 +22,36 @@ public class BrightnessManipulation implements ImageFilter {
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
-        // TODO
-        return null;
+        BufferedImage bi = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                Color c = new Color(image.getRGB(x, y));
+
+                if (area == Areas.ALL
+                        || area == Areas.BRIGHT && c.getRed() < 30 && c.getBlue() < 30 && c.getGreen() < 30
+                        || area == Areas.DARK && c.getRed() > 225 && c.getBlue() > 225 && c.getGreen() > 225){
+                    bi.setRGB(x, y, applyPercentageColor(c));
+                } else{
+                    bi.setRGB(x, y, c.getRGB());
+                }
+            }
+        }
+        return bi;
+    }
+
+    private int applyPercentageColor(Color c){
+        return new Color(applyPercentageInt(c.getRed(), value),
+                applyPercentageInt(c.getGreen(), value),
+                applyPercentageInt(c.getBlue(), value)).getRGB();
+    }
+
+    private int applyPercentageInt(int value, int percentage){
+        if (percentage > 0){
+            int difference = 255 - value;
+            return value + difference * percentage / 100;
+        } else {
+            return value + value * percentage / 100;
+        }
     }
 
     private void verifyState() {
