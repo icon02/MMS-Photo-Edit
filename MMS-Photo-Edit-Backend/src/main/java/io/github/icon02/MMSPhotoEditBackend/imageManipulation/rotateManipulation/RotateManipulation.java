@@ -20,26 +20,69 @@ public class RotateManipulation implements ImageFilter {
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
-        /*
-        TODO
-        degrees do not have to be followed exactly. We only support
-        90 right, 90 left und 180. Therefore, we only take the
-        nearest value of 'degrees' that is supported
-         */
+
+        int deg = getActualDegrees();
+
+        if (selectionRaster == null) // whole image
+            return rotateWholeImage(image , deg);
+        else // selection
+            return rotateWithSelection(image, selectionRaster , deg);
+
+    }
+
+
+    private BufferedImage rotateWholeImage(BufferedImage image, int deg) {
+
         BufferedImage newImg = new BufferedImage(image.getHeight(), image.getWidth(), BufferedImage.TYPE_INT_RGB);
+
+        // 180 deg
+        if (135 < deg && deg <= 225)
+            return new MirrorManipulation(MirrorManipulation.Direction.HORIZONTAL).apply(image, null);
+
+        for (int i = 0; i < image.getHeight(); i++) {
+            for (int j = 0; j < image.getWidth(); j++) {
+
+                // 90 deg right
+                if (45 <= deg && deg <= 135)
+                    newImg.setRGB((image.getHeight() - 1) - i, j, image.getRGB(j, i));
+
+                // 90 deg left
+                else if (225 < deg && deg <= 315)
+                    newImg.setRGB(i, (image.getWidth() - 1) - j, image.getRGB(j, i));
+            }
+        }
+
+        return newImg;
+    }
+
+    private BufferedImage rotateWithSelection(BufferedImage image, Boolean[][] selectionRaster, int deg) {
+
+        BufferedImage newImg = new BufferedImage(image.getHeight(), image.getWidth(), BufferedImage.TYPE_INT_RGB);
+
+        // 180 deg
+        if (135 < deg && deg <= 225)
+            return new MirrorManipulation(MirrorManipulation.Direction.HORIZONTAL).apply(image, selectionRaster);
+
         for (int i = 0; i < image.getHeight(); i++) {
             for (int j = 0; j < image.getWidth(); j++) {
                 if (selectionRaster[i][j]) {
-                    if (45 <= degrees && degrees <= 135)
+
+                    // 90 deg right
+                    if (45 <= deg && deg <= 135)
                         newImg.setRGB((image.getHeight() - 1) - i, j, image.getRGB(j, i));
-                    else if (135 < degrees && degrees <= 225)
-                        new MirrorManipulation(MirrorManipulation.Direction.HORIZONTAL).apply(image, selectionRaster);
-                    else if (225 < degrees && degrees <= 315)
+
+                    // 90 deg left
+                    else if (225 < deg && deg <= 315)
                         newImg.setRGB(i, (image.getWidth() - 1) - j, image.getRGB(j, i));
                 }
             }
         }
+
         return newImg;
+    }
+
+    private int getActualDegrees() {
+        return this.degrees % 360;
     }
 
     private void verifyState() {
