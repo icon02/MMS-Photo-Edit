@@ -20,8 +20,7 @@ public class BlurFilter implements ImageFilter {
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
-        // TODO replace with custom implementation
-//        BufferedImage output = new BufferedImage(image.getColorModel(), image.getRaster(), image.isAlphaPremultiplied(), null);
+
         int radius = (int)(2.5 * variance + 1);
 
         return blur(image, calcMatrix(radius), radius, selectionRaster);
@@ -49,8 +48,8 @@ public class BlurFilter implements ImageFilter {
                             int sampleJ = j + weightJ - (weights.length / 2);
 
                             // if out of bounds
-                            if (sampleI > (image.getWidth() -  1)) sampleI = image.getWidth() - 1 - radius;
-                            if (sampleJ > (image.getHeight()-  1)) sampleJ = image.getHeight()- 1 - radius;
+                            if (sampleI > (image.getWidth() - 1)) sampleI = image.getWidth() - 1 - radius;
+                            if (sampleJ > (image.getHeight() - 1)) sampleJ = image.getHeight() - 1 - radius;
 
                             if (sampleI < 0) sampleI = Math.abs(sampleI);
                             if (sampleJ < 0) sampleJ = Math.abs(sampleJ);
