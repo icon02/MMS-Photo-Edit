@@ -1,6 +1,7 @@
 import {
   HttpClient,
   HttpHeaders,
+  HttpParams,
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
@@ -154,6 +155,156 @@ export class ImageService {
     return this.httpClient.request<any>(request);
   }
 
+  mirror(dir: 'vertical' | 'horizontal'): void {
+    this.isLoadingSubject.next(true);
+
+    const params = new HttpParams().set('dir', dir);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/mirror',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          responseType: 'blob',
+          withCredentials: true,
+          params: params,
+        }
+      )
+      .subscribe((res) => {
+        this.setNextImage(res);
+        this.isLoadingSubject.next(false);
+      });
+  }
+
+  rotate(rotation: number): void {
+    this.isLoadingSubject.next(true);
+
+    const params = new HttpParams().set('rotation', rotation);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/rotate',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          responseType: 'blob',
+          withCredentials: true,
+          params: params,
+        }
+      )
+      .subscribe((res) => {
+        this.setNextImage(res);
+        this.isLoadingSubject.next(true);
+      });
+  }
+
+  adaptRGB(r: number, g: number, b: number): void {
+    this.isLoadingSubject.next(true);
+
+    const params = new HttpParams().set('r', r).set('g', g).set('b', b);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/rgb',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          responseType: 'blob',
+          withCredentials: true,
+          params: params,
+        }
+      )
+      .subscribe((res) => {
+        this.setNextImage(res);
+        this.isLoadingSubject.next(true);
+      });
+  }
+
+  greyscale(): void {
+    this.isLoadingSubject.next(true);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/greyscale',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          responseType: 'blob',
+          withCredentials: true,
+        }
+      )
+      .subscribe((res) => {
+        this.setNextImage(res);
+        this.isLoadingSubject.next(true);
+      });
+  }
+
+  adaptBrightness(
+    val: number,
+    type: 'all' | 'dark' | 'bright' = 'bright'
+  ): void {
+    this.isLoadingSubject.next(true);
+
+    let url = IMAGE_BASE_URL + '/brightness';
+    switch (type) {
+      case 'all':
+        break;
+      case 'dark':
+        url += '/dark';
+        break;
+      case 'bright':
+        url += '/bright';
+        break;
+    }
+
+    const params = new HttpParams().set('val', val);
+
+    this.httpClient
+      .post(
+        url,
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          responseType: 'blob',
+          withCredentials: true,
+          params: params,
+        }
+      )
+      .subscribe((res) => {
+        this.setNextImage(res);
+        this.isLoadingSubject.next(true);
+      });
+  }
+
+  blur(variance: number): void {
+    this.isLoadingSubject.next(true);
+
+    const params = new HttpParams().set('variance', variance);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/blur',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          responseType: 'blob',
+          withCredentials: true,
+          params: params,
+        }
+      )
+      .subscribe((res) => {
+        this.setNextImage(res);
+        this.isLoadingSubject.next(true);
+      });
+  }
+
   colorInvert(): void {
     this.isLoadingSubject.next(true);
 
@@ -166,6 +317,32 @@ export class ImageService {
           observe: 'response',
           responseType: 'blob',
           withCredentials: true,
+        }
+      )
+      .subscribe((res) => {
+        this.setNextImage(res);
+        this.isLoadingSubject.next(false);
+      });
+  }
+
+  colorizeEdges(threshold: number, bgColor: string, edgeColor: string): void {
+    this.isLoadingSubject.next(true);
+
+    const params = new HttpParams()
+      .set('threshold', threshold)
+      .set('bg-color', bgColor)
+      .set('edge-color', edgeColor);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/edge-colorize',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          responseType: 'blob',
+          withCredentials: true,
+          params: params,
         }
       )
       .subscribe((res) => {

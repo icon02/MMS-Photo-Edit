@@ -19,6 +19,7 @@ public class MirrorManipulation implements ImageFilter {
 
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
+<<<<<<< HEAD
         BufferedImage newImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
 
         for (int i = 0; i < newImg.getHeight(); i++ ) {
@@ -32,6 +33,9 @@ public class MirrorManipulation implements ImageFilter {
             }
         }
         return newImg;
+=======
+        return null;
+>>>>>>> Master
     }
 
     public enum Direction {

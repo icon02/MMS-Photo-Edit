@@ -4,7 +4,11 @@
     <label class="visually-hidden" for="mirror-form-left"
       >Mirror horizontal</label
     >
-    <button class="btn btn-outline-primary w-100" type="submit">
+    <button
+      class="btn btn-outline-primary w-100"
+      type="submit"
+      (click)="onHorizontalClicked()"
+    >
       <span class="bi bi-symmetry-horizontal"></span>
       <br />
       <span class="small">Mirror horizontal</span>
@@ -16,7 +20,11 @@
     <label class="visually-hidden" for="mirror-form-left"
       >Mirror vertical</label
     >
-    <button class="btn btn-outline-primary w-100" type="submit">
+    <button
+      class="btn btn-outline-primary w-100"
+      type="submit"
+      (click)="onVerticalClicked()"
+    >
       <span class="bi bi bi-symmetry-vertical"></span>
       <br />
       <span class="small">Mirror vertical</span>
