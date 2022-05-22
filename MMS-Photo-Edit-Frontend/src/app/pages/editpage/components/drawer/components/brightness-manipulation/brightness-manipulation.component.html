@@ -6,8 +6,11 @@
   <app-range-group
     label="General Brightness:"
     name="general-brightness"
+    (onChange)="onGeneralBrightnessChange($event)"
   ></app-range-group>
-  <app-preview-apply-group></app-preview-apply-group>
+  <app-preview-apply-group
+    (onApplyClicked)="onGeneralBrightnessApply()"
+  ></app-preview-apply-group>
 </form>
 
 <hr />
@@ -20,8 +23,11 @@
   <app-range-group
     label="Adapt brightness of dark areas:"
     name="dark-spot-brightness"
+    (onChange)="onDarkBrightnessChange($event)"
   ></app-range-group>
-  <app-preview-apply-group></app-preview-apply-group>
+  <app-preview-apply-group
+    (onApplyClicked)="onDarkBrightnessApply()"
+  ></app-preview-apply-group>
 </form>
 
 <hr />
@@ -34,6 +40,9 @@
   <app-range-group
     label="Adapt brightness of bright areas:"
     name="bright-spot-brightness"
+    (onChange)="onBrightBrightnessChange($event)"
   ></app-range-group>
-  <app-preview-apply-group></app-preview-apply-group>
+  <app-preview-apply-group
+    (onApplyClicked)="onBrightBrightnessApply()"
+  ></app-preview-apply-group>
 </form>

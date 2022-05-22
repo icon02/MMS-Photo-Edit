@@ -19,9 +19,7 @@ public class MirrorManipulation implements ImageFilter {
 
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
-        BufferedImage output = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-
-        return output;
+        return null;
     }
 
     public enum Direction {

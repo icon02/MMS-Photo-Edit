@@ -8,6 +8,7 @@ import java.lang.reflect.Array;
 public class SubSampler<T> {
 
     public T[][] resize(T[][] raster, int reqWidth, int reqHeight, Class<T> clazz) {
+        // TODO
         return raster;
     }
 }

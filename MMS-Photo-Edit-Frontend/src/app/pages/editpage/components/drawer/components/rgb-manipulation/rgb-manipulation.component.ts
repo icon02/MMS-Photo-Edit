@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ImageService } from 'src/app/image.service';
 
 @Component({
   selector: 'app-rgb-manipulation',
@@ -10,11 +11,23 @@ export class RgbManipulationComponent implements OnInit {
   green: number = 0;
   blue: number = 0;
 
-  constructor() {}
+  constructor(private imageService: ImageService) {}
 
   ngOnInit(): void {}
 
-  onSubmit(event: Event): void {
-    console.log('rgb-manipulation: onSubmit.event', event);
+  onRedChange(e: Event): void {
+    this.red = Number.parseInt((e.target as HTMLInputElement).value);
+  }
+
+  onGreenChange(e: Event): void {
+    this.green = Number.parseInt((e.target as HTMLInputElement).value);
+  }
+
+  onBlueChange(e: Event): void {
+    this.blue = Number.parseInt((e.target as HTMLInputElement).value);
+  }
+
+  onApply(): void {
+    this.imageService.adaptRGB(this.red, this.green, this.blue);
   }
 }

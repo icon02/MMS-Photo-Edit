@@ -21,8 +21,8 @@ public class RGBManipulation implements ImageFilter {
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
+        // TODO replace with custom implementation
         BufferedImage output = new BufferedImage(image.getColorModel(), image.getRaster(), image.isAlphaPremultiplied(), null);
-        // TODO
         return output;
     }
 

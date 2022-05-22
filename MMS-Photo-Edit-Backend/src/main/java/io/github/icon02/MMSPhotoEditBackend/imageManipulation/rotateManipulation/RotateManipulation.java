@@ -20,6 +20,7 @@ public class RotateManipulation implements ImageFilter {
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
         /*
+        TODO
         degrees do not have to be followed exactly. We only support
         90 right, 90 left und 180. Therefore, we only take the
         nearest value of 'degrees' that is supported
