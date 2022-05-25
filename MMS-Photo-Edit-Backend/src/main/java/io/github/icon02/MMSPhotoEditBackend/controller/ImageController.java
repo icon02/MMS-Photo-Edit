@@ -1,6 +1,7 @@
 package io.github.icon02.MMSPhotoEditBackend.controller;
 
 import io.github.icon02.MMSPhotoEditBackend.filter.SessionFilter;
+import io.github.icon02.MMSPhotoEditBackend.mapper.HashMapToSelectionMapper;
 import io.github.icon02.MMSPhotoEditBackend.service.ImageService;
 import static io.github.icon02.MMSPhotoEditBackend.service.ImageService.ManipulationType.*;
 import io.github.icon02.MMSPhotoEditBackend.utils.MultipartImage;
@@ -18,12 +19,14 @@ import java.util.List;
 public class ImageController {
 
     private final ImageService imageService;
+    private final HashMapToSelectionMapper selectionMapper;
 
     /* ==================== CONSTRUCTOR ==================== */
 
     @Autowired
-    public ImageController(ImageService imageService) {
+    public ImageController(ImageService imageService, HashMapToSelectionMapper selectionMapper) {
         this.imageService = imageService;
+        this.selectionMapper = selectionMapper;
     }
 
     /* ==================== GET MAPPINGS ==================== */
@@ -58,7 +61,7 @@ public class ImageController {
         HashMap<String, Object> params = new HashMap<>();
         params.put(ImageService.PARAM_MIRROR_DIRECTION, direction);
 
-        MultipartImage image =  imageService.manipulate(sessionId, selection, MIRROR, params);
+        MultipartImage image =  imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), MIRROR, params);
 
         return buildImageResponse(image);
     }
@@ -70,7 +73,7 @@ public class ImageController {
         HashMap<String, Object> params = new HashMap<>();
         params.put(ImageService.PARAM_ROTATION, rotation);
 
-        MultipartImage image = imageService.manipulate(sessionId, selection, ROTATE, params);
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), ROTATE, params);
 
         return buildImageResponse(image);
     }
@@ -90,7 +93,7 @@ public class ImageController {
         params.put(ImageService.PARAM_RGB_G, g);
         params.put(ImageService.PARAM_RGB_B, b);
 
-        MultipartImage image = imageService.manipulate(sessionId, selection, RGB, params);
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), RGB, params);
 
         return buildImageResponse(image);
     }
@@ -99,7 +102,7 @@ public class ImageController {
     public ResponseEntity<?> greyscale(@RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
-        MultipartImage image = imageService.manipulate(sessionId, selection, GREYSCALE, new HashMap<>());
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), GREYSCALE, new HashMap<>());
 
         return buildImageResponse(image);
     }
@@ -111,7 +114,7 @@ public class ImageController {
         HashMap<String, Object> params = new HashMap<>();
         params.put(ImageService.PARAM_BRIGHTNESS_VAL, value);
 
-        MultipartImage image = imageService.manipulate(sessionId, selection, BRIGHTNESS, params);
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), BRIGHTNESS, params);
 
         return buildImageResponse(image);
     }
@@ -123,7 +126,7 @@ public class ImageController {
         HashMap<String, Object> params = new HashMap<>();
         params.put(ImageService.PARAM_BRIGHTNESS_VAL, value);
 
-        MultipartImage image = imageService.manipulate(sessionId, selection, DARK_BRIGHTNESS, params);
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), DARK_BRIGHTNESS, params);
 
         return buildImageResponse(image);
     }
@@ -135,7 +138,7 @@ public class ImageController {
         HashMap<String, Object> params = new HashMap<>();
         params.put(ImageService.PARAM_BRIGHTNESS_VAL, value);
 
-        MultipartImage image = imageService.manipulate(sessionId, selection, BRIGHT_BRIGHTNESS, params);
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), BRIGHT_BRIGHTNESS, params);
 
         return buildImageResponse(image);
     }
@@ -147,7 +150,7 @@ public class ImageController {
         HashMap<String, Object> params = new HashMap<>();
         params.put(ImageService.PARAM_BLUR_VARIANCE, variance);
 
-        MultipartImage image = imageService.manipulate(sessionId, selection, BLUR, params);
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), BLUR, params);
 
         return buildImageResponse(image);
     }
@@ -156,7 +159,7 @@ public class ImageController {
     public ResponseEntity<?> colorInvert(@RequestBody Object selection, HttpServletRequest request) {
         String sessionId = getSessionId(request);
 
-        MultipartImage image = imageService.manipulate(sessionId, selection, COLOR_INVERT, new HashMap<>());
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), COLOR_INVERT, new HashMap<>());
 
         return buildImageResponse(image);
     }

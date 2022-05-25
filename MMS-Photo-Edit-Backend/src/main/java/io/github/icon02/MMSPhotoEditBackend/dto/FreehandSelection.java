@@ -1,5 +1,6 @@
 package io.github.icon02.MMSPhotoEditBackend.dto;
 
+import io.github.icon02.MMSPhotoEditBackend.utils.Point2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FreehandSelection {
-    private List<Integer> points;
+public class FreehandSelection extends CanvasSelection {
+    private List<Point2D> points;
 }

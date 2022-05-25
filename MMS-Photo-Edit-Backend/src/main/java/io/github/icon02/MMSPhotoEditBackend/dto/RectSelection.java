@@ -10,12 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RectSelection {
+public class RectSelection extends CanvasSelection {
     private Point2D topLeft;
     private int width;
     private int height;
-
-    public RectSelection(int topLeftX, int topLeftY, int width, int height) {
-        this(new Point2D(topLeftX, topLeftY), width, height);
-    }
 }
