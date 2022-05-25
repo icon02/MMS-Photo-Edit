@@ -52,7 +52,12 @@ img {
   cursor: crosshair;
 }
 
+/*
+removed since img-Tag-loading times
+are not stable enough
+
 .blurred {
   filter: blur(16px);
   -webkit-filter: blur(16px);
 }
+*/
