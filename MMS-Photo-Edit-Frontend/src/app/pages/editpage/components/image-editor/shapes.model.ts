@@ -17,3 +17,5 @@ export interface Point {
 export interface FreeHandShape {
   points: Point[];
 }
+
+export type Shape = Rectangle | Circle | FreeHandShape;
