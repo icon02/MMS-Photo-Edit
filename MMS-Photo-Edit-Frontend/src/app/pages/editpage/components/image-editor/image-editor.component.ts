@@ -13,6 +13,8 @@ import { SelectToolService } from './components/select-tools/select-tool.service
 import { SelectTool } from './components/select-tools/select-tool.type';
 import { Circle, FreeHandShape, Point, Rectangle } from './shapes.model';
 
+import { getCircle, getRect } from './shape.utils';
+
 //
 /* ==================== CANVAS EDITOR CONSTANTS ==================== */
 
@@ -81,6 +83,49 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
     this.selectToolService.selectedToolBSubject.subscribe((val) => {
       this.selectedTool = val;
       this.resetSelection();
+      this.clearCanvas();
+    });
+
+    this.selectToolService.curSelectionBSubject.subscribe((selection) => {
+      if (
+        selection &&
+        (selection as any).topLeft &&
+        (selection as any).width &&
+        (selection as any).height
+      ) {
+        // Rectangle
+        const rectSelection: Rectangle = selection as Rectangle;
+        this.clearCanvas();
+        this.drawRect(
+          rectSelection.topLeft.x,
+          rectSelection.topLeft.y,
+          rectSelection.width,
+          rectSelection.height
+        );
+      } else if (
+        selection &&
+        (selection as any).center &&
+        (selection as any).radius
+      ) {
+        // Circle
+        const circleSelection: Circle = selection as Circle;
+        this.clearCanvas();
+        this.drawCircle(
+          circleSelection.center.x,
+          circleSelection.center.y,
+          circleSelection.radius
+        );
+      } else if (selection && Array.isArray((selection as any).points)) {
+        // FreeHandShape
+        const freeHandSelection: FreeHandShape = selection as FreeHandShape;
+        const length = freeHandSelection.points.length;
+        if (length >= 2) {
+          this.drawLine(
+            freeHandSelection.points[length - 2],
+            freeHandSelection.points[length - 1]
+          );
+        }
+      }
     });
 
     this.imageService.isLoadingSubject.subscribe(
@@ -101,20 +146,22 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
   onMouseMove(event: PointerEvent): void {
     const point = this.getPointOnCanvas(event);
     if (this.mouseDownAt && this.selectedTool === 'rectangle') {
-      const rect = this.getRect(point);
+      const rect: Rectangle = getRect(this.mouseDownAt, point);
       if (rect) {
         this.clearCanvas();
-        this.drawRect(rect.topLeft.x, rect.topLeft.y, rect.width, rect.height);
+        this.selectToolService.curSelectionBSubject.next(rect);
+        // this.drawRect(rect.topLeft.x, rect.topLeft.y, rect.width, rect.height);
       }
     } else if (this.mouseDownAt && this.selectedTool === 'ellipse') {
-      const circle = this.getCircle(point);
+      const circle = getCircle(this.mouseDownAt, point);
       if (circle) {
         this.clearCanvas();
-        this.drawCircle(circle.center.x, circle.center.y, circle.radius);
+        this.selectToolService.curSelectionBSubject.next(circle);
+        // this.drawCircle(circle.center.x, circle.center.y, circle.radius);
       }
     } else if (this.selectedTool === 'free-hand') {
-      if (this.curSelection && !this.isPathClosed) {
-        const curPath = this.curSelection as FreeHandShape;
+      if (this.selectToolService.curSelection && !this.isPathClosed) {
+        const curPath = this.selectToolService.curSelection as FreeHandShape;
         if (curPath.points.length > 1) {
           const firstPoint = curPath.points[0];
           if (this.shouldPathClose(firstPoint, point)) this.isClosePath = true;
@@ -130,17 +177,23 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
 
   onCanvasClicked(e: MouseEvent): void {
     const eventPoint: Point = this.getPointOnCanvas(e);
-
+    console.log('onCanvasClicked');
     switch (this.selectedTool) {
       case 'free-hand': {
-        if (this.curSelection === null) {
+        if (this.selectToolService.curSelection === null) {
           // first click
-          this.curSelection = { points: [eventPoint] };
-        } else if ((this.curSelection as any).points) {
+          // this.curSelection = { points: [eventPoint] };
+          this.selectToolService.curSelectionBSubject.next({
+            points: [eventPoint],
+          });
+        } else if ((this.selectToolService.curSelection as any).points) {
           if (this.isPathClosed) this.resetSelection();
 
           // any click after first click
-          const curSelection = this.curSelection as FreeHandShape;
+          const curSelection = {
+            points: (this.selectToolService.curSelection as FreeHandShape)
+              .points,
+          };
           if (this.isClosePath) {
             curSelection.points = [
               ...curSelection.points,
@@ -154,12 +207,15 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
             curSelection.points = [...curSelection.points, eventPoint];
           }
 
+          this.selectToolService.curSelectionBSubject.next(curSelection);
+          /*
           this.curSelection = curSelection;
 
           this.drawLine(
             curSelection.points[curSelection.points.length - 2],
             curSelection.points[curSelection.points.length - 1]
           );
+          */
         } else {
           this.resetSelection();
           this.selectToolService.selectedToolBSubject.next('free-hand');
@@ -185,14 +241,14 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
   onCanvasMouseUp(e: MouseEvent): void {
     const point = this.getPointOnCanvas(e);
     if (this.mouseDownAt && this.selectedTool == 'rectangle') {
-      const rect = this.getRect(point);
+      const rect = getRect(this.mouseDownAt, point);
       if (rect) {
         this.clearCanvas();
         this.drawRect(rect.topLeft.x, rect.topLeft.y, rect.width, rect.height);
         this.mouseDownAt = null;
       }
     } else if (this.mouseDownAt && this.selectedTool == 'ellipse') {
-      const circle = this.getCircle(point);
+      const circle = getCircle(this.mouseDownAt, point);
       if (circle) {
         this.clearCanvas();
         this.drawCircle(circle.center.x, circle.center.y, circle.radius);
@@ -289,7 +345,8 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
   /* ==================== PRIVATE SELECTION METHODS ==================== */
 
   private resetSelection(): void {
-    this.curSelection = null;
+    this.selectToolService.curSelectionBSubject.next(null);
+    // this.curSelection = null;
     this.mouseDownAt = null;
     this.clearCanvas();
     this.isClosePath = false;
@@ -298,138 +355,11 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
 
   /* ==================== PRIVATE METHODS ==================== */
 
-  private getCircle(curMousePoint: Point): Circle | null {
-    if (this.mouseDownAt && curMousePoint) {
-      const startPoint = this.mouseDownAt;
-      const endPoint = curMousePoint;
-
-      let width = Math.abs(endPoint.x - startPoint.x);
-      let height = Math.abs(endPoint.y - startPoint.y);
-
-      const radius = width > height ? height / 2 : width / 2;
-
-      /*
-      x = center
-
-      0 -- x
-      |
-      y
-                  |
-         top left | top right
-                  |
-      ----------- x -----------
-                  |
-      bottom left | bottom right
-                  |
-      */
-      if (endPoint.x < startPoint.x && endPoint.y < startPoint.y) {
-        // top left
-        return {
-          center: {
-            x: startPoint.x - radius,
-            y: startPoint.y - radius,
-          },
-          radius: radius,
-        };
-      } else if (endPoint.x > startPoint.x && endPoint.y < startPoint.y) {
-        // top right
-        return {
-          center: {
-            x: startPoint.x + radius,
-            y: startPoint.y - radius,
-          },
-          radius: radius,
-        };
-      } else if (endPoint.x > startPoint.x && endPoint.y > startPoint.y) {
-        // bottom right
-        return {
-          center: {
-            x: startPoint.x + radius,
-            y: startPoint.y + radius,
-          },
-          radius: radius,
-        };
-      } else if (endPoint.x < startPoint.x && endPoint.y > startPoint.y) {
-        // bottom left
-        return {
-          center: {
-            x: startPoint.x - radius,
-            y: startPoint.y + radius,
-          },
-          radius: radius,
-        };
-      } else {
-        /* y or x coordinates are the same */
-      }
-    }
-
-    return null;
-  }
-
-  private getRect(curMousePoint: Point): Rectangle | null {
-    if (this.mouseDownAt && curMousePoint) {
-      const startPoint = this.mouseDownAt;
-      const endPoint = curMousePoint;
-
-      console.log('StartPoint', startPoint);
-      console.log('EndPoint', endPoint);
-
-      const width = Math.abs(endPoint.x - startPoint.x);
-      const height = Math.abs(endPoint.y - startPoint.y);
-
-      /*
-      x = center
-
-      0 -- x
-      |
-      y
-                  |
-         top left | top right
-                  |
-      ----------- x -----------
-                  |
-      bottom left | bottom right
-                  |
-      */
-      if (endPoint.x < startPoint.x && endPoint.y < startPoint.y) {
-        // top left
-        return {
-          topLeft: { x: endPoint.x, y: endPoint.y },
-          width: width,
-          height: height,
-        };
-      } else if (endPoint.x > startPoint.x && endPoint.y < startPoint.y) {
-        // top right
-        return {
-          topLeft: { x: startPoint.x, y: endPoint.y },
-          width: width,
-          height: height,
-        };
-      } else if (endPoint.x > startPoint.x && endPoint.y > startPoint.y) {
-        // bottom right
-        return {
-          topLeft: { x: startPoint.x, y: startPoint.y },
-          width: width,
-          height: height,
-        };
-      } else if (endPoint.x < startPoint.x && endPoint.y > startPoint.y) {
-        // bottom left
-        return {
-          topLeft: { x: endPoint.x, y: startPoint.y },
-          width: width,
-          height: height,
-        };
-      }
-    }
-
-    return null;
-  }
-
   private setCanvas(): void {
     // compute image dimensions within image-Element
     // see https://stackoverflow.com/a/52187440
     const img = this.img.nativeElement;
-    console.log('img', img);
+    // console.log('img', img);
     if (!img) new Error('Could not get image from onload-Event');
     const ratio = img.naturalWidth / img.naturalHeight;
     let width = img.height * ratio;
