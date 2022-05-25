@@ -165,7 +165,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/mirror',
-        this.selectToolService.curSelection || {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -188,7 +194,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/rotate',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -211,7 +223,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/rgb',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -232,7 +250,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/greyscale',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -269,7 +293,13 @@ export class ImageService {
     this.httpClient
       .post(
         url,
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -292,7 +322,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/blur',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -313,7 +349,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/color-invert',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -338,7 +380,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/edge-colorize',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',

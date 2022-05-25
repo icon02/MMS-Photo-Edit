@@ -13,6 +13,9 @@ export class SelectToolService {
   curSelectionBSubject: DistinctBehaviorSubject<Shape | null> =
     new DistinctBehaviorSubject<Shape | null>(null);
 
+  canvasWidth: number = 0;
+  canvasHeight: number = 0;
+
   constructor() {}
 
   get selectTool(): SelectTool | null {
