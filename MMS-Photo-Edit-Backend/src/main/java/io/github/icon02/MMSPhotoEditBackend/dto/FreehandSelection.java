@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FreehandSelection {
+public class FreehandSelection extends CanvasSelection {
     private List<Point2D> points;
 }

@@ -39,7 +39,13 @@ public class HashMapToSelectionMapper {
         Object height = map.get("height");
         if (!(height instanceof Number)) return null;
 
-        return new RectSelection(
+        Integer canvasWidth = getCanvasWidth(map);
+        if(canvasWidth == null) return null;
+
+        Integer canvasHeight = getCanvasHeight(map);
+        if(canvasHeight == null) return null;
+
+        RectSelection selection = new RectSelection(
                 new Point2D(
                         ((Number) topLeftX).intValue(),
                         ((Number) topLeftY).intValue()
@@ -47,6 +53,10 @@ public class HashMapToSelectionMapper {
                 ((Number) width).intValue(),
                 ((Number) height).intValue()
         );
+        selection.setCanvasWidth(canvasWidth);
+        selection.setCanvasHeight(canvasHeight);
+
+        return selection;
     }
 
     private CircleSelection getCircleSelection(Map map) {
@@ -61,17 +71,39 @@ public class HashMapToSelectionMapper {
         Object radius = map.get("radius");
         if (!(radius instanceof Number)) return null;
 
-        return new CircleSelection(
+        Integer canvasWidth = getCanvasWidth(map);
+        if(canvasWidth == null) return null;
+
+        Integer canvasHeight = getCanvasHeight(map);
+        if(canvasHeight == null) return null;
+
+        CircleSelection selection = new CircleSelection(
                 new Point2D(
                         ((Number) centerX).intValue(),
                         ((Number) centerY).intValue()
                 ),
                 ((Number) radius).intValue()
         );
+        selection.setCanvasWidth(canvasWidth);
+        selection.setCanvasHeight(canvasHeight);
+
+        return selection;
     }
 
     private FreehandSelection getFreeHandSelection(Map map) {
         // TODO
         return null;
+    }
+
+    private Integer getCanvasWidth(Map map) {
+        Object canvasWidth = map.get("canvasWidth");
+        if(!(canvasWidth instanceof Number)) return null;
+        return ((Number) canvasWidth).intValue();
+    }
+
+    private Integer getCanvasHeight(Map map) {
+        Object canvasHeight = map.get("canvasHeight");
+        if(!(canvasHeight instanceof Number)) return null;
+        return ((Number) canvasHeight).intValue();
     }
 }

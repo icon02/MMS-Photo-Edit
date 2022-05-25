@@ -173,6 +173,7 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
 
   onImgLoad(): void {
     this.setCanvas();
+    console.log('canvas:', this.canvas);
   }
 
   onCanvasClicked(e: MouseEvent): void {
@@ -379,6 +380,9 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
 
     // using the zoom property to not override existing transform
     (this.canvas.nativeElement.style as any).zoom = canvas_zoom;
+
+    this.selectToolService.canvasWidth = width * canvas_dim_multiplier;
+    this.selectToolService.canvasHeight = height * canvas_dim_multiplier;
   }
 
   private getPointOnCanvas(event: MouseEvent): Point {
