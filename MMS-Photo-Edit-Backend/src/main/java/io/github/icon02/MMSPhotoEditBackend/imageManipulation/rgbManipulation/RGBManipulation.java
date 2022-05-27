@@ -1,11 +1,13 @@
 package io.github.icon02.MMSPhotoEditBackend.imageManipulation.rgbManipulation;
 
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.ImageFilter;
+import io.github.icon02.MMSPhotoEditBackend.imageManipulation.ImageManipulationUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @AllArgsConstructor
@@ -21,9 +23,18 @@ public class RGBManipulation implements ImageFilter {
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
-        // TODO replace with custom implementation
-        BufferedImage output = new BufferedImage(image.getColorModel(), image.getRaster(), image.isAlphaPremultiplied(), null);
-        return output;
+        BufferedImage bi = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                if (selectionRaster == null || selectionRaster[x][y] != null && selectionRaster[x][y]){
+                    Color c = new Color(image.getRGB(x, y));
+                    bi.setRGB(x, y, ImageManipulationUtil.applyPercentageColor(c, rDif, gDif, bDif));
+                } else{
+                    bi.setRGB(x, y,image.getRGB(x, y));
+                }
+            }
+        }
+        return bi;
     }
 
     private void verifyState() {
