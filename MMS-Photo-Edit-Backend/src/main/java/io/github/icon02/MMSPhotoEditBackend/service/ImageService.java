@@ -6,6 +6,7 @@ import io.github.icon02.MMSPhotoEditBackend.imageManipulation.ImageFilter;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.blurFilter.BlurFilter;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.brightnessManipulation.BrightnessManipulation;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.colorInversionManipulation.ColorInversionManipulation;
+import io.github.icon02.MMSPhotoEditBackend.imageManipulation.edgeColorizationManipulation.EdgeColorizationManipulation;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.greyScaleManipulation.GreyScaleManipulation;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.mirrorManipulation.MirrorManipulation;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.rgbManipulation.RGBManipulation;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,6 +34,9 @@ public class ImageService {
     public static final String PARAM_RGB_R = "RED";
     public static final String PARAM_RGB_G = "GREEN";
     public static final String PARAM_RGB_B = "BLUE";
+    public static final String PARAM_EDGE_BG = "BACKGROUNDCOLOR";
+    public static final String PARAM_EDGE_EDGECOLOR = "EDGECOLOR";
+    public static final String PARAM_EDGE_THRESHOLD = "THRESHOLD";
 
     public static final String PARAM_BRIGHTNESS_VAL = "VAL";
 
@@ -103,6 +108,13 @@ public class ImageService {
                 Integer g = (Integer) params.get(PARAM_RGB_G);
                 Integer b = (Integer) params.get(PARAM_RGB_B);
                 filter = new RGBManipulation(r, g, b);
+                break;
+            }
+            case EDGE_COLORIZATION: {
+                Integer threshold = (Integer) params.get(PARAM_EDGE_THRESHOLD);
+                Color bgColor = Color.decode((String) params.get(PARAM_EDGE_BG));
+                Color edgeColor = Color.decode((String) params.get(PARAM_EDGE_EDGECOLOR));
+                filter = new EdgeColorizationManipulation(threshold, bgColor, edgeColor);
                 break;
             }
             case GREYSCALE: {
@@ -225,5 +237,6 @@ public class ImageService {
         BRIGHT_BRIGHTNESS,
         BLUR,
         COLOR_INVERT,
+        EDGE_COLORIZATION
     }
 }
