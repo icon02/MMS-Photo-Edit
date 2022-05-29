@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class SelectionToRasterMapper {
 
-    public Boolean[][] getRaster(Object selection, Integer reqWidth, Integer reqHeight) {
+    public Boolean[][]  getRaster(Object selection, Integer reqWidth, Integer reqHeight) {
         if (reqWidth == null || reqHeight == null) return null;
         Boolean[][] raster = null;
 
