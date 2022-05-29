@@ -34,9 +34,6 @@ public class ImageService {
     public static final String PARAM_RGB_R = "RED";
     public static final String PARAM_RGB_G = "GREEN";
     public static final String PARAM_RGB_B = "BLUE";
-    public static final String PARAM_EDGE_BG = "BACKGROUNDCOLOR";
-    public static final String PARAM_EDGE_EDGECOLOR = "EDGECOLOR";
-    public static final String PARAM_EDGE_THRESHOLD = "THRESHOLD";
 
     public static final String PARAM_BRIGHTNESS_VAL = "VAL";
 
@@ -113,13 +110,6 @@ public class ImageService {
                 Integer g = (Integer) params.get(PARAM_RGB_G);
                 Integer b = (Integer) params.get(PARAM_RGB_B);
                 filter = new RGBManipulation(r, g, b);
-                break;
-            }
-            case EDGE_COLORIZATION: {
-                Integer threshold = (Integer) params.get(PARAM_EDGE_THRESHOLD);
-                Color bgColor = Color.decode((String) params.get(PARAM_EDGE_BG));
-                Color edgeColor = Color.decode((String) params.get(PARAM_EDGE_EDGECOLOR));
-                filter = new EdgeColorizationManipulation(threshold, bgColor, edgeColor);
                 break;
             }
             case GREYSCALE: {
