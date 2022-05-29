@@ -3,6 +3,9 @@ package io.github.icon02.MMSPhotoEditBackend.controller;
 import io.github.icon02.MMSPhotoEditBackend.filter.SessionFilter;
 import io.github.icon02.MMSPhotoEditBackend.mapper.HashMapToSelectionMapper;
 import io.github.icon02.MMSPhotoEditBackend.service.ImageService;
+
+import static io.github.icon02.MMSPhotoEditBackend.service.ImageService.ManipulationType.*;
+
 import io.github.icon02.MMSPhotoEditBackend.utils.MultipartImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -12,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
-
-import static io.github.icon02.MMSPhotoEditBackend.service.ImageService.ManipulationType.*;
 
 @RestController
 @RequestMapping("/image")
@@ -62,7 +63,7 @@ public class ImageController {
         HashMap<String, Object> params = new HashMap<>();
         params.put(ImageService.PARAM_MIRROR_DIRECTION, direction);
 
-        MultipartImage image =  imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), MIRROR, params);
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), MIRROR, params);
 
         return buildImageResponse(image);
     }
@@ -86,7 +87,7 @@ public class ImageController {
             @RequestParam(defaultValue = "0") Integer b,
             @RequestBody Object selection,
             HttpServletRequest request) {
-
+        //
         String sessionId = getSessionId(request);
 
         HashMap<String, Object> params = new HashMap<>();
@@ -95,25 +96,6 @@ public class ImageController {
         params.put(ImageService.PARAM_RGB_B, b);
 
         MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), RGB, params);
-
-        return buildImageResponse(image);
-    }
-
-    @PostMapping("/edge-colorize")
-    public ResponseEntity<?> edgeColorize(
-            @RequestParam (defaultValue = "0") Integer threshold,
-            @RequestParam (defaultValue = "#000000") String bgColor,
-            @RequestParam (defaultValue = "#057452") String edgeColor,
-            @RequestBody Object selection,
-            HttpServletRequest request) {
-        String sessionId = getSessionId(request);
-
-        HashMap<String, Object> params = new HashMap<>();
-        params.put(ImageService.PARAM_EDGE_BG, bgColor);
-        params.put(ImageService.PARAM_EDGE_EDGECOLOR, edgeColor);
-        params.put(ImageService.PARAM_EDGE_THRESHOLD, threshold);
-
-        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), EDGE_COLORIZATION, params);
 
         return buildImageResponse(image);
     }
@@ -184,6 +166,26 @@ public class ImageController {
         return buildImageResponse(image);
     }
 
+    @PostMapping("/edge-colorize")
+    public ResponseEntity<?> edgeColorize(
+            @RequestParam(name = "threshold", defaultValue = "1") Integer threshold,
+            @RequestParam(name = "bg-color", defaultValue = "#000000") String bgColor,
+            @RequestParam(name = "edge-color", defaultValue = "#057452") String edgeColor,
+            @RequestBody Object selection,
+            HttpServletRequest request) {
+        //
+        String sessionId = getSessionId(request);
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(ImageService.PARAM_EDGE_BG_COLOR, bgColor);
+        params.put(ImageService.PARAM_EDGE_EDGE_COLOR, edgeColor);
+        params.put(ImageService.PARAM_EDGE_THRESHOLD, threshold);
+
+        MultipartImage image = imageService.manipulate(sessionId, selectionMapper.toSelectionObject(selection), EDGE_COLORIZATION, params);
+
+        return buildImageResponse(image);
+    }
+
 
     /* ==================== PRIVATE HELPER METHODS ==================== */
     private HttpHeaders prepareMultipartImageHeaders(MultipartImage image) {
@@ -193,7 +195,7 @@ public class ImageController {
         // .orElse(MediaType.APPLICATION_OCTET_STREAM);
 
         String fileName = image.getOriginalFilename();
-        if(fileName == null) fileName = "mms_edit";
+        if (fileName == null) fileName = "mms_edit";
         ContentDisposition disposition = ContentDisposition
                 .attachment()
                 .filename(fileName)
@@ -219,8 +221,8 @@ public class ImageController {
     }
 
     private ResponseEntity<?> buildImageResponse(MultipartImage image) {
-        if(image == null) return ResponseEntity.badRequest().build();
-        if(image.getOriginalFilename() == null) return ResponseEntity.internalServerError().build();
+        if (image == null) return ResponseEntity.badRequest().build();
+        if (image.getOriginalFilename() == null) return ResponseEntity.internalServerError().build();
 
         HttpHeaders headers = prepareMultipartImageHeaders(image);
         return new ResponseEntity<>(image.getResource(), headers, HttpStatus.OK);

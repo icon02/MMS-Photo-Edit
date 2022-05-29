@@ -42,6 +42,11 @@ public class ImageService {
 
     public static final String PARAM_BLUR_VARIANCE = "VARIANCE";
 
+    public static final String PARAM_EDGE_THRESHOLD = "THRESHOLD";
+    public static final String PARAM_EDGE_BG_COLOR = "BG_COLOR";
+    public static final String PARAM_EDGE_EDGE_COLOR = "EDGE_COLOR";
+
+
 
     private final SessionTempRepository sessionRepository;
 
@@ -143,6 +148,15 @@ public class ImageService {
             }
             case COLOR_INVERT:
                 filter = new ColorInversionManipulation();
+                break;
+            case EDGE_COLORIZATION:
+                Integer threshold = (Integer) params.get(PARAM_EDGE_THRESHOLD);
+                String bgColorStr = (String) params.get(PARAM_EDGE_BG_COLOR);
+                Color bgColor = Color.decode(bgColorStr);
+                String edgeColorStr = (String) params.get(PARAM_EDGE_EDGE_COLOR);
+                Color edgeColor = Color.decode(edgeColorStr);
+
+                filter = new EdgeColorizationManipulation(threshold, bgColor, edgeColor);
                 break;
             default:
                 return null;
