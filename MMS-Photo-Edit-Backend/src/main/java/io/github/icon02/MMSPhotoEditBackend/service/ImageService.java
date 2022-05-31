@@ -6,6 +6,7 @@ import io.github.icon02.MMSPhotoEditBackend.imageManipulation.ImageFilter;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.blurFilter.BlurFilter;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.brightnessManipulation.BrightnessManipulation;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.colorInversionManipulation.ColorInversionManipulation;
+import io.github.icon02.MMSPhotoEditBackend.imageManipulation.edgeColorizationManipulation.EdgeColorizationManipulation;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.greyScaleManipulation.GreyScaleManipulation;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.mirrorManipulation.MirrorManipulation;
 import io.github.icon02.MMSPhotoEditBackend.imageManipulation.rgbManipulation.RGBManipulation;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,6 +38,11 @@ public class ImageService {
     public static final String PARAM_BRIGHTNESS_VAL = "VAL";
 
     public static final String PARAM_BLUR_VARIANCE = "VARIANCE";
+
+    public static final String PARAM_EDGE_THRESHOLD = "THRESHOLD";
+    public static final String PARAM_EDGE_BG_COLOR = "BG_COLOR";
+    public static final String PARAM_EDGE_EDGE_COLOR = "EDGE_COLOR";
+
 
 
     private final SessionTempRepository sessionRepository;
@@ -132,6 +139,15 @@ public class ImageService {
             case COLOR_INVERT:
                 filter = new ColorInversionManipulation();
                 break;
+            case EDGE_COLORIZATION:
+                Integer threshold = (Integer) params.get(PARAM_EDGE_THRESHOLD);
+                String bgColorStr = (String) params.get(PARAM_EDGE_BG_COLOR);
+                Color bgColor = Color.decode(bgColorStr);
+                String edgeColorStr = (String) params.get(PARAM_EDGE_EDGE_COLOR);
+                Color edgeColor = Color.decode(edgeColorStr);
+
+                filter = new EdgeColorizationManipulation(threshold, bgColor, edgeColor);
+                break;
             default:
                 return null;
         }
@@ -225,5 +241,6 @@ public class ImageService {
         BRIGHT_BRIGHTNESS,
         BLUR,
         COLOR_INVERT,
+        EDGE_COLORIZATION
     }
 }

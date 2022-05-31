@@ -8,6 +8,7 @@ import {
 import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { catchError, map, Observable } from 'rxjs';
+import { SelectToolService } from './pages/editpage/components/image-editor/components/select-tools/select-tool.service';
 import { Session } from './session.model';
 import { SessionService } from './session.service';
 import { DistinctBehaviorSubject } from './utils/DistinctBehaviorSubject';
@@ -48,6 +49,7 @@ export class ImageService {
 
   constructor(
     private sessionService: SessionService,
+    private selectToolService: SelectToolService,
     private httpClient: HttpClient,
     private sanitizer: DomSanitizer
   ) {
@@ -163,7 +165,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/mirror',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -186,7 +194,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/rotate',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -209,7 +223,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/rgb',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -230,7 +250,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/greyscale',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -267,7 +293,13 @@ export class ImageService {
     this.httpClient
       .post(
         url,
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -290,7 +322,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/blur',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -311,7 +349,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/color-invert',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
@@ -336,7 +380,13 @@ export class ImageService {
     this.httpClient
       .post(
         IMAGE_BASE_URL + '/edge-colorize',
-        {},
+        this.selectToolService.curSelection
+          ? {
+              ...this.selectToolService.curSelection,
+              canvasWidth: this.selectToolService.canvasWidth,
+              canvasHeight: this.selectToolService.canvasHeight,
+            }
+          : {},
         {
           headers: this.defaultHeaders,
           observe: 'response',
