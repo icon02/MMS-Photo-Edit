@@ -6,7 +6,11 @@ import io.github.icon02.MMSPhotoEditBackend.dto.RectSelection;
 import io.github.icon02.MMSPhotoEditBackend.utils.Point2D;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class HashMapToSelectionMapper {
@@ -91,8 +95,25 @@ public class HashMapToSelectionMapper {
     }
 
     private FreehandSelection getFreeHandSelection(Map map) {
-        // TODO
-        return null;
+        Object points = map.get("points");
+        if (!(points instanceof ArrayList)) return null;
+
+        Integer canvasWidth = getCanvasWidth(map);
+        if(canvasWidth == null) return null;
+
+        Integer canvasHeight = getCanvasHeight(map);
+        if(canvasHeight == null) return null;
+
+
+        List<Point2D> actualPoints = ((ArrayList<LinkedHashMap>) points).stream()
+                .map(m -> new Point2D(((Number) m.get("x")).intValue(), ((Number) m.get("y")).intValue()))
+                .collect(Collectors.toList());
+
+        FreehandSelection selection = new FreehandSelection(actualPoints);
+
+        selection.setCanvasWidth(canvasWidth);
+        selection.setCanvasHeight(canvasHeight);
+        return selection;
     }
 
     private Integer getCanvasWidth(Map map) {
