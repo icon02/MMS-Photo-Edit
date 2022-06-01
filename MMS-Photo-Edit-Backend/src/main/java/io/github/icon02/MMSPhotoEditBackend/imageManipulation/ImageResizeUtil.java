@@ -25,14 +25,12 @@ public class ImageResizeUtil {
     public BufferedImage resize(BufferedImage original, int width, int height) {
         BufferedImage output = new BufferedImage(width, height, original.getType());
 
-        // TODO custom implementation
 
         return output;
     }
 
     public BufferedImage resize(BufferedImage original, int pixels, String dim) {
         if(original == null) return null;
-        // TODO custom implementation
 
         return null;
     }
@@ -40,7 +38,6 @@ public class ImageResizeUtil {
     public BufferedImage createThumbnail(BufferedImage image) {
         if(image == null) return null;
         /*
-        TODO
         resize the image, so that the area of the new image
         is <= thumbnail_max_area but as large as possible
          */
