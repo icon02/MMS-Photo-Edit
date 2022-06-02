@@ -54,6 +54,32 @@ public class ImageController {
             return ResponseEntity.internalServerError().build();
     }
 
+    /* ===== BASE METHODS ===== */
+
+    @PostMapping("/undo")
+    public ResponseEntity<Void> undo(HttpServletRequest request) {
+        String sessionId = getSessionId(request);
+
+        boolean success = imageService.undo(sessionId);
+
+        if (success)
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/redo")
+    public ResponseEntity<Void> redo(HttpServletRequest request) {
+        String sessionId = getSessionId(request);
+
+        boolean success = imageService.redo(sessionId);
+
+        if(success)
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.badRequest().build();
+    }
+
     /* ===== IMAGE MANIPULATION ===== */
 
     @PostMapping("/mirror")
