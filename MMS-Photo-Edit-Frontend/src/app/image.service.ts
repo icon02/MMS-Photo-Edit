@@ -117,27 +117,59 @@ export class ImageService {
   }
 
   undo(): void {
-    if (!this.isLoadingSubject.value) {
-      if (this.allowsUndoSubject.value) {
-        this.curImageIdx = this.curImageIdx - 1;
-        this.curImageSubject.next(this.images[this.curImageIdx]);
+    if (!this.allowsUndoSubject.value) return;
 
-        this.refreshUndoSubject();
-        this.refreshRedoSubject();
-      }
-    }
+    this.isLoadingSubject.next(true);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/undo',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          withCredentials: true,
+        }
+      )
+      .subscribe((res) => {
+        if (res.ok) {
+          this.curImageIdx--;
+          this.curImageSubject.next(this.images[this.curImageIdx]);
+
+          this.refreshRedoSubject();
+          this.refreshUndoSubject();
+        }
+
+        this.isLoadingSubject.next(false);
+      });
   }
 
   redo(): void {
-    if (!this.isLoadingSubject.value) {
-      if (this.allowsRedoSubject.value) {
-        this.curImageIdx++;
-        this.curImageSubject.next(this.images[this.curImageIdx]);
+    if (!this.allowsRedoSubject.value) return;
 
-        this.refreshUndoSubject();
-        this.refreshRedoSubject();
-      }
-    }
+    this.isLoadingSubject.next(true);
+
+    this.httpClient
+      .post(
+        IMAGE_BASE_URL + '/redo',
+        {},
+        {
+          headers: this.defaultHeaders,
+          observe: 'response',
+          withCredentials: true,
+        }
+      )
+      .subscribe((res) => {
+        if (res.ok) {
+          this.curImageIdx++;
+          this.curImageSubject.next(this.images[this.curImageIdx]);
+
+          this.refreshUndoSubject();
+          this.refreshRedoSubject();
+        }
+
+        this.isLoadingSubject.next(false);
+      });
   }
 
   downloadCurrent(): Observable<any> {
@@ -404,14 +436,20 @@ export class ImageService {
   /* ==================== PRIVATE METHODS ==================== */
 
   private refreshUndoSubject(): void {
-    if (this.curImageIdx > 0) this.allowsUndoSubject.next(true);
-    else this.allowsUndoSubject.next(false);
+    let allow = true;
+
+    if (this.curImageIdx <= 0) allow = false;
+
+    this.allowsUndoSubject.next(allow);
   }
 
   private refreshRedoSubject(): void {
-    if (this.curImageIdx >= this.images.length)
-      this.allowsRedoSubject.next(false);
-    else this.allowsRedoSubject.next(true);
+    let allow = true;
+    if (this.images.length == 0) allow = false;
+
+    if (this.curImageIdx >= this.images.length - 1) allow = false;
+
+    this.allowsRedoSubject.next(allow);
   }
 
   private async getFileFromSafeUrl(imageUrl: SafeResourceUrl): Promise<File> {
@@ -429,8 +467,11 @@ export class ImageService {
         this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
       this.images.push(safeImgUrl);
       this.curImageSubject.next(safeImgUrl);
+      this.curImageIdx++;
 
       // TODO logic for allowUndoSubject
+      this.refreshUndoSubject();
+      this.refreshRedoSubject();
     }
   }
 }
