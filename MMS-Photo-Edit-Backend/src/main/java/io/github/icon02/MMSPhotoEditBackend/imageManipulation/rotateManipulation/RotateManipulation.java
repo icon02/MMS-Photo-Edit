@@ -9,8 +9,6 @@ import lombok.Setter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
 
 @AllArgsConstructor
 @NoArgsConstructor
