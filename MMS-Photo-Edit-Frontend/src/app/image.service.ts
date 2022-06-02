@@ -211,7 +211,7 @@ export class ImageService {
       )
       .subscribe((res) => {
         this.setNextImage(res);
-        this.isLoadingSubject.next(true);
+        this.isLoadingSubject.next(false);
       });
   }
 
@@ -240,7 +240,7 @@ export class ImageService {
       )
       .subscribe((res) => {
         this.setNextImage(res);
-        this.isLoadingSubject.next(true);
+        this.isLoadingSubject.next(false);
       });
   }
 
@@ -266,7 +266,7 @@ export class ImageService {
       )
       .subscribe((res) => {
         this.setNextImage(res);
-        this.isLoadingSubject.next(true);
+        this.isLoadingSubject.next(false);
       });
   }
 
@@ -310,7 +310,7 @@ export class ImageService {
       )
       .subscribe((res) => {
         this.setNextImage(res);
-        this.isLoadingSubject.next(true);
+        this.isLoadingSubject.next(false);
       });
   }
 
@@ -339,7 +339,7 @@ export class ImageService {
       )
       .subscribe((res) => {
         this.setNextImage(res);
-        this.isLoadingSubject.next(true);
+        this.isLoadingSubject.next(false);
       });
   }
 
