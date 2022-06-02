@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -73,7 +74,7 @@ public class RotateManipulation implements ImageFilter {
                                 newImg.setRGB((image.getHeight() - 1) - i, j, c.getRGB());
                             // 90 deg left
                             else if (225 < deg && deg <= 315)
-                                newImg.setRGB(i, (image.getHeight() - 1) - j, c.getRGB());
+                                newImg.setRGB(i, (image.getWidth() - 1) - j, c.getRGB());
                         } catch (ArrayIndexOutOfBoundsException ignored) { }
                     }
                 }
