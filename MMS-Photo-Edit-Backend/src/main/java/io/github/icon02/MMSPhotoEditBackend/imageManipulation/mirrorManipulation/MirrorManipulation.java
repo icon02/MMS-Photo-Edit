@@ -47,6 +47,7 @@ public class MirrorManipulation implements ImageFilter {
                 }
             }
         } else { // selection of the image
+            // fill new image
             for (int i = 0; i < image.getWidth(); i++)
                 for (int j = 0; j < image.getHeight(); j++)
                     newImg.setRGB(i, j, image.getRGB(i, j));
@@ -68,13 +69,9 @@ public class MirrorManipulation implements ImageFilter {
                             newImg.setRGB(i, end - (j - start), left.getRGB());
                         }
                     }
-                } // end for1
+                }
             } else if (direction == Direction.VERTICAL) {
                 ArrayList<ArrayList<Integer>> selected = rasterCols(selectionRaster);
-
-                for (int i = 0; i < image.getWidth(); i++)
-                    for (int j = 0; j < image.getHeight(); j++)
-                        newImg.setRGB(i, j, image.getRGB(i, j));
 
                 for (int i = 0; i < image.getHeight(); i++) {
                     ArrayList<Integer> inner = selected.get(i);
@@ -96,10 +93,10 @@ public class MirrorManipulation implements ImageFilter {
     }
 
     /**
-     * Fetches and stored the coordinates that are selected in the selection raster for horizontal mirroring.
+     * Fetches and stores the coordinates that are selected in the selection raster for horizontal mirroring.
      *
      * @param raster    The selection raster.
-     * @return          List of lists of coordinated.
+     * @return          List of lists of coordinates.
      */
     private ArrayList<ArrayList<Integer>> rasterRows(Boolean[][] raster) {
         ArrayList<ArrayList<Integer>> r = new ArrayList<>();
@@ -114,14 +111,13 @@ public class MirrorManipulation implements ImageFilter {
     }
 
     /**
-     * Fetches and stored the coordinates that are selected in the selection raster for vertical mirroring.
+     * Fetches and stores the coordinates that are selected in the selection raster for vertical mirroring.
      *
      * @param raster    The selection raster.
      * @return          List of lists of coordinated.
      */
     private ArrayList<ArrayList<Integer>> rasterCols(Boolean[][] raster) {
-        Boolean[][] t = transpose(raster);
-        return rasterRows(t);
+        return rasterRows(transpose(raster));
     }
 
     /**
@@ -131,14 +127,12 @@ public class MirrorManipulation implements ImageFilter {
      * @return          Transposed matrix.
      */
     private Boolean[][] transpose(Boolean[][] matrix) {
-        int w = matrix.length;
-        int h = matrix[0].length;
+        Boolean[][] transposed = new Boolean[matrix[0].length][matrix.length];
 
-        Boolean[][] transposed = new Boolean[h][w];
-
-        for (int i = 0; i < w; i++)
-            for (int j = 0; j < h; j++)
+        for (int i = 0; i < matrix.length; i++)
+            for (int j = 0; j < matrix[i].length; j++)
                 transposed[j][i] = matrix[i][j];
+
         return transposed;
     }
 

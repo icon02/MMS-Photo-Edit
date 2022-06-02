@@ -22,13 +22,13 @@ public class RotateManipulation implements ImageFilter {
     @Override
     public BufferedImage apply(BufferedImage image, Boolean[][] selectionRaster) {
         verifyState();
-
         return rotateImage(image , getActualDegrees(), selectionRaster);
     }
 
 
     /**
-     * Rotate (part of) the image.
+     * Rotate (part of) the image. Only rotation 90 degrees to the left or to the right
+     * and 180 degrees rotation are supported.
      *
      * @param image             Original image.
      * @param deg               Degrees.
@@ -48,7 +48,6 @@ public class RotateManipulation implements ImageFilter {
             for (int i = 0; i < image.getHeight(); i++) {
                 for (int j = 0; j < image.getWidth(); j++) {
                     Color c = new Color(image.getRGB(j, i));
-
                     // 90 deg right
                     if (45 <= deg && deg <= 135)
                         newImg.setRGB((image.getHeight() - 1) - i, j, c.getRGB());
@@ -59,53 +58,28 @@ public class RotateManipulation implements ImageFilter {
             }
         } else { // selection of the image
             newImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-
+            // fill new image
             for (int i = 0; i < image.getWidth(); i++)
                 for (int j = 0; j < image.getHeight(); j++)
-                        newImg.setRGB(i, j, image.getRGB(i, j));
-
-            ArrayList<ArrayList<Integer>> selected = raster(selectionRaster);
+                    newImg.setRGB(i, j, image.getRGB(i, j));
 
             for (int i = 0; i < image.getHeight(); i++) {
-                ArrayList<Integer> inner = selected.get(i);
-
-                if (inner.size() != 0) {
-                    int start = inner.get(0);
-                    int end = inner.get(inner.size()-1);
-                    for (int j = start; j <= end; j++) {
-
-                        if (selectionRaster[j][i]) {
-                            Color c = new Color(image.getRGB(j, i));
-
-                            try {
-                                // 90 deg right
-                                if (45 <= deg && deg <= 135)
-                                    newImg.setRGB(end - i , j , c.getRGB());
-
-
-                                // 90 deg left
-                                else if (225 < deg && deg <= 315)
-                                    newImg.setRGB( i, end - j, c.getRGB());
-                            } catch (Exception ignored) {}
-                        }
-
+                for (int j = 0; j < image.getWidth(); j++) {
+                    if (selectionRaster[j][i]) {
+                        Color c = new Color(image.getRGB(j, i));
+                        try {
+                            // 90 deg right
+                            if (45 <= deg && deg <= 135)
+                                newImg.setRGB((image.getHeight() - 1) - i, j, c.getRGB());
+                            // 90 deg left
+                            else if (225 < deg && deg <= 315)
+                                newImg.setRGB(i, (image.getHeight() - 1) - j, c.getRGB());
+                        } catch (ArrayIndexOutOfBoundsException ignored) { }
                     }
                 }
             }
         }
         return newImg;
-    }
-
-    private ArrayList<ArrayList<Integer>> raster(Boolean[][] raster) {
-        ArrayList<ArrayList<Integer>> r = new ArrayList<>();
-        for (int i = 0; i < raster.length; i++) {
-            r.add(new ArrayList<>());
-            for (int j = 0; j < raster[i].length; j++) {
-                if (raster[i][j])
-                    r.get(i).add(j);
-            }
-        }
-        return r;
     }
 
     /**
