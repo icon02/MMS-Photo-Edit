@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -27,9 +27,9 @@ public class MirrorManipulation implements ImageFilter {
     /**
      * Mirror (part of) the image.
      *
-     * @param image             Original image.
-     * @param selectionRaster   Defines the part, that will be mirrored, if not null;
-     * @return                  Mirrored image.
+     * @param image           Original image.
+     * @param selectionRaster Defines the part, that will be mirrored, if not null;
+     * @return Mirrored image.
      */
     private BufferedImage mirrorImage(BufferedImage image, Boolean[][] selectionRaster) {
         BufferedImage newImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -39,11 +39,11 @@ public class MirrorManipulation implements ImageFilter {
                 for (int j = 0; j < newImg.getHeight(); j++) {
 
                     Color c = new Color(image.getRGB(i, j));
+
                     if (direction == Direction.VERTICAL)
                         newImg.setRGB((newImg.getWidth() - 1) - i, j, c.getRGB());
                     else if (direction == Direction.HORIZONTAL)
                         newImg.setRGB(i, (newImg.getHeight() - 1) - j, c.getRGB());
-
                 }
             }
         } else { // selection of the image

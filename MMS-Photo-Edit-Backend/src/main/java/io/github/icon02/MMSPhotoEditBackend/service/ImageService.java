@@ -76,6 +76,22 @@ public class ImageService {
         return imageToFile(imgMo, imgMo.getCurrent());
     }
 
+    public boolean undo(String sessionId) {
+        ImageManipulationObject imgMo = get(sessionId);
+
+        if(imgMo == null) return false;
+
+        return imgMo.undo();
+    }
+
+    public boolean redo(String sessionId) {
+        ImageManipulationObject imgMo = get(sessionId);
+
+        if(imgMo == null) return false;
+
+        return imgMo.redo();
+    }
+
     public MultipartImage manipulate(String sessionId, Object selection, ManipulationType type, HashMap<String, Object> params) {
         ImageManipulationObject imgMo = get(sessionId);
         if (imgMo == null) return null;

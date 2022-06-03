@@ -7,15 +7,16 @@
   <button
     class="btn btn-light rounded-0 border-bottom"
     title="Undo"
+    [ngClass]="{
+      'bg-primary': allowUndo,
+      'text-white': allowUndo,
+      'border-primary': allowUndo
+    }"
     [disabled]="!allowUndo || disabled"
     [attr.aria-disabled]="!allowUndo || disabled"
     (click)="onUndoClicked()"
   >
-    <span
-      class="bi bi-arrow-counterclockwise"
-      aria-hidden="true"
-      [ngClass]="{ 'text-primary': allowUndo }"
-    ></span>
+    <span class="bi bi-arrow-counterclockwise" aria-hidden="true"></span>
     <span class="visually-hidden">Undo</span>
   </button>
 
@@ -23,21 +24,22 @@
   <button
     class="btn btn-light rounded-0 border-bottom"
     title="Redo"
+    [ngClass]="{
+      'bg-primary': allowRedo,
+      'text-white': allowRedo,
+      'border-primary': allowRedo
+    }"
     [disabled]="!allowRedo || disabled"
     [attr.aria-disabled]="!allowRedo || disabled"
     (click)="onRedoClicked()"
   >
-    <span
-      class="bi bi-arrow-clockwise"
-      aria-hidden="true"
-      [ngClass]="{ 'text-primary': allowRedo }"
-    ></span>
+    <span class="bi bi-arrow-clockwise" aria-hidden="true"></span>
     <span class="visually-hidden">Redo</span>
   </button>
 
   <!--  DOWNLOAD -->
   <button
-    class="btn btn-primary rounded-0 border-bottom border-primary"
+    class="btn btn-info rounded-0 border-bottom border-info"
     title="Download"
     [disabled]="disabled"
     [attr.aria-disabled]="disabled"
@@ -48,6 +50,7 @@
   </button>
 
   <!-- RESET -->
+  <!--
   <button
     class="btn btn-danger rounded-0 border-bottom border-danger"
     aria-label="reset"
@@ -57,6 +60,7 @@
   >
     RESET
   </button>
+-->
 
   <!-- DOWNLOAD PROGRESS -->
   <app-dialog [show]="isDownloading">
