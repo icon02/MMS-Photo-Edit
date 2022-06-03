@@ -462,14 +462,19 @@ export class ImageService {
 
   private setNextImage(response: HttpResponse<Blob>): void {
     if (response.status === 200 && response.body) {
+      // remove all 'redo'-images
+      const newImgArr = this.images.slice(0, this.curImageIdx + 1);
+      this.images = newImgArr;
+
+      // add new image
       const unsafeUrl = window.URL.createObjectURL(response.body);
       const safeImgUrl =
         this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
+
       this.images.push(safeImgUrl);
       this.curImageSubject.next(safeImgUrl);
       this.curImageIdx++;
 
-      // TODO logic for allowUndoSubject
       this.refreshUndoSubject();
       this.refreshRedoSubject();
     }
