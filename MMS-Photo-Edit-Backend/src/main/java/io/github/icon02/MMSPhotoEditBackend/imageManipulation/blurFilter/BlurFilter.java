@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 @Setter
 public class BlurFilter implements ImageFilter {
 
-    // used to calculate the weights in the weight matrix
+    // used to calculate the weights in the weight matrix and the radius of the weight matrix
     private Integer variance;
 
     @Override
@@ -42,7 +42,6 @@ public class BlurFilter implements ImageFilter {
 
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
-
                 if (selectionRaster == null || selectionRaster[i][j] != null && selectionRaster[i][j]) {
                     double[][] red   = new double[radius][radius];
                     double[][] green = new double[radius][radius];
@@ -51,7 +50,6 @@ public class BlurFilter implements ImageFilter {
                     // get surrounding pixels
                     for (int weightI = 0; weightI < weights.length; weightI++) {
                         for (int weightJ = 0; weightJ < weights[weightI].length; weightJ++) {
-
                             double currentWeight = weights[weightI][weightJ];
 
                             int sampleI = i + weightI - (weights.length / 2);
@@ -65,7 +63,6 @@ public class BlurFilter implements ImageFilter {
 
 
                             Color color = new Color(image.getRGB(sampleI, sampleJ));
-
                             red   [weightI][weightJ] = currentWeight * color.getRed();
                             green [weightI][weightJ] = currentWeight * color.getGreen();
                             blue  [weightI][weightJ] = currentWeight * color.getBlue();
@@ -73,9 +70,8 @@ public class BlurFilter implements ImageFilter {
                         } // end for4
                     } // end for3
                     newImg.setRGB(i, j, new Color(weightedColor(red), weightedColor(green), weightedColor(blue)).getRGB());
-                } // end if
+                } // end if sectionRaster
                 else newImg.setRGB(i, j, image.getRGB(i, j));
-
             } // end for2
         } // end for1
         return newImg;
@@ -90,9 +86,9 @@ public class BlurFilter implements ImageFilter {
     private int weightedColor(double[][] weightedColor) {
         double s = 0;
 
-        for (int i = 0; i < weightedColor.length; i++)
-            for (int j = 0; j < weightedColor[i].length; j++)
-                s += weightedColor[i][j];
+        for (double[] w : weightedColor)
+            for (double d : w)
+                s += d;
 
         int sum = (int)s;
 
@@ -127,11 +123,11 @@ public class BlurFilter implements ImageFilter {
     }
 
     /**
-     * The Gaussian Formula to calculate individual weights in the weight matrix.
+     * Apply the Gaussian Formula to calculate individual weights in the weight matrix.
      *
      * @param i     Row index.
      * @param j     Column index.
-     * @return      Weight at index i,j.
+     * @return      Weight at index i, j.
      */
     private double gaussianFormula(double i, double j) {
         return (1 / (2*Math.PI*Math.pow(variance, 2)) * Math.exp(-(Math.pow(i, 2)+Math.pow(j, 2)) / (2*Math.pow(variance, 2))));

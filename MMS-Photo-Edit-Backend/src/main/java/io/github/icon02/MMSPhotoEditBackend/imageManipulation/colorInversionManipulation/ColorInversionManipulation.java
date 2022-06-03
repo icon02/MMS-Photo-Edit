@@ -25,7 +25,6 @@ public class ColorInversionManipulation implements ImageFilter {
 
         for (int i = 0; i < newImg.getWidth(); i++) {
             for (int j = 0; j < newImg.getHeight(); j++) {
-
                 Color c = new Color(image.getRGB(i, j));
                 if (selectionRaster == null || selectionRaster[i][j] != null && selectionRaster[i][j]) {
                     Color newColor = new Color(
@@ -36,7 +35,6 @@ public class ColorInversionManipulation implements ImageFilter {
                 newImg.setRGB(i, j, newColor.getRGB());
                 }
                 else newImg.setRGB(i, j, c.getRGB());
-
             }
         }
         return newImg;
