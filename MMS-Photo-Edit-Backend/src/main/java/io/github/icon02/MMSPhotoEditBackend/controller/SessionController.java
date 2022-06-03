@@ -1,7 +1,6 @@
 package io.github.icon02.MMSPhotoEditBackend.controller;
 
 import io.github.icon02.MMSPhotoEditBackend.entity.Session;
-import io.github.icon02.MMSPhotoEditBackend.filter.SessionFilter;
 import io.github.icon02.MMSPhotoEditBackend.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

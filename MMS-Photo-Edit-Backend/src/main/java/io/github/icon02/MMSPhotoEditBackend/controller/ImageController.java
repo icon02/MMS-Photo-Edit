@@ -3,9 +3,6 @@ package io.github.icon02.MMSPhotoEditBackend.controller;
 import io.github.icon02.MMSPhotoEditBackend.filter.SessionFilter;
 import io.github.icon02.MMSPhotoEditBackend.mapper.HashMapToSelectionMapper;
 import io.github.icon02.MMSPhotoEditBackend.service.ImageService;
-
-import static io.github.icon02.MMSPhotoEditBackend.service.ImageService.ManipulationType.*;
-
 import io.github.icon02.MMSPhotoEditBackend.utils.MultipartImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -15,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+
+import static io.github.icon02.MMSPhotoEditBackend.service.ImageService.ManipulationType.*;
 
 @RestController
 @RequestMapping("/image")
